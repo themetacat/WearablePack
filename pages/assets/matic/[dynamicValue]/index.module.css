@@ -142,6 +142,7 @@ font-weight: 600;
     align-items: center;  
     position: relative;
     margin-left: 10px;
+    cursor: pointer;
   }
   /* .copiedTypeCon{
     width: 100px;
@@ -149,6 +150,7 @@ font-weight: 600;
     height: 30px;
   } */
   .copiedTypeCon {
+    
     display: inline-block;
     position: absolute;
     bottom: 30px;

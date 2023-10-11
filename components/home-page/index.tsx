@@ -856,7 +856,7 @@ export default function HomePage({ onClickHandler }: Props,ref) {
         
       }
       const iconSvg =()=>{
-        window.open('https://testnets.opensea.io/collection/wearablepack-1')
+        window.open('https://opensea.io/collection/wearablepack')
       }
 
       const goBack =()=>{

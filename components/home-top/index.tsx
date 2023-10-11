@@ -1148,7 +1148,7 @@ web3.eth.getBalance(walletAddress)
       }, []);
 
       const iconSvg =()=>{
-        window.open('https://testnets.opensea.io/collection/wearablepack-1')
+        window.open('https://opensea.io/collection/wearablepack')
       }
 
 
