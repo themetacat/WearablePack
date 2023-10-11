@@ -46,7 +46,7 @@ import {
   getAccount,
   rmBabylonModel,
 } from "../../../../service";
-import { setTimeout } from "timers/promises";
+// import { setTimeout } from "timers/promises";
 
 export default function Matic() {
   const router = useRouter();
@@ -58,13 +58,16 @@ export default function Matic() {
   const [tokenboundAccountNum, setTokenboundAccountNum] = useState("");
   const [title, setTitle] = useState("");
   const [wearableType, setwearableType] = useState(null);
-  const [getCode, setGetCode] = useState(false);
+  const [getCode, setGetCode] = useState(false);          
+  const [copyText, setCopytext] = useState(false);          
   const [popUp, setPopUp] = useState(false);
+  const [clipboard, setClipboard] = useState(false);
+  const [copied, setCopied] = useState(false);
   const [editNum, setEditNum] = useState("WalletConnect URI");
   const [dataInfoList, setDataInfoList] = React.useState([] || null);
 
   const meta = {
-    title: ` ${SITE_NAME}`,
+    title: `${title} ${SITE_NAME}`,
     description: META_DESCRIPTION,
   };
 
@@ -194,20 +197,34 @@ export default function Matic() {
     navigator.clipboard
       .writeText(textToCopy)
       .then(() => {
+        setCopytext(true)
+        setCopied(true)
+        setClipboard(false)
         // // console.log("文本已复制到剪贴板");
-        alert("文本已复制到剪贴板");
-        toast.success("文本已复制到剪贴板");
+        // alert("文本已复制到剪贴板");
+        // toast.success("文本已复制到剪贴板")0;
+         setTimeout(() => {
+        setCopytext(false);
+        setCopied(false)
+      }, 1000); // 2000毫秒 = 2秒
       })
+      
       .catch((error) => {
         // console.error("复制文本到剪贴板时出错:", error);
       });
+     
   };
 
   useEffect(() => {
-    // 检查浏览器是否支持Clipboard API
+    // // 检查浏览器是否支持Clipboard API
     if (!navigator.clipboard) {
       // console.warn("该浏览器不支持Clipboard API");
     }
+    // const a = window.localStorage.getItem('metaMask')
+    // if(!a){
+    //   router.replace('/')
+    //   toast.error('登錄')
+    // }
   }, []);
 
   useEffect(() => {
@@ -644,27 +661,21 @@ export default function Matic() {
         className={cn("", popUp === true ? style.page1 : style.page)}
       >
         <HomePage />
-        {wearableType==='voxels'? (
-          <div style={{ marginTop: "20px" }}>
-            <VoxFiled />
-          </div>
-        ) : null}
-        {wearableType==='Decentraland' ? (
-          <div style={{ marginTop: "20px" }}>
-            <DclContent />
-          </div>
-        ) : null}
-        {wearableType==='Other'||wearableType===null? (
-          <>
-            <div className={style.container}>
-              <div className={style.cont}>
-                <p className={style.idNum}>{title}</p>
+        <div className={style.cont}>
+        <p className={style.idNum}>{title}</p>
                 <div style={{ display: "flex" }}>
-                  <div onClick={handleCopyClick}>
+                  <div style={{display:"flex"}}>
                     <p className={style.TbaAdd}>
                       Wallet:&nbsp;{tokenboundAccountNum}
-                    </p>
-                  </div>
+                      </p>
+                    <div className={style.fuzhi} onMouseEnter={()=>{setClipboard(true)}} onMouseLeave={() => setClipboard(false)}  onClick={handleCopyClick}><img src={copyText===false?'/images/icon/fuzhi.png':'/images/icon/duihao.png'} alt="" />  
+                    {/* <div  className={style.copiedTypeCon}> */}
+                    {/* <div className={style.copiedType}></div> */}
+                    {clipboard===true?<span className={style.copiedTypeCon}>Copy address to clipboard</span>:null}
+                    {copied===true?<span className={style.copiedTypeCon}>copied</span>:null}
+                    {/* </div> */}
+                   </div></div>
+                  
                   {getCode === true ? (
                     <div
                       className={style.btnAccount}
@@ -687,9 +698,28 @@ export default function Matic() {
                     Refresh metadata
                   </div>
                 </div>
-
-                <p className={style.totalNum}>{dataInfo.length} Wearables</p>
-              </div>
+               <p className={style.totalNum}>{dataInfo.length} {wearableType==='voxels'||wearableType==='Decentraland'?'Wearables':'Assets'}</p>
+             </div>
+        {wearableType==='voxels'? (
+          <div style={{ marginTop: "20px" }}>
+            <VoxFiled />
+          </div>
+        ) : null}
+        {wearableType==='Decentraland' ? (
+          <div style={{ marginTop: "20px" }}>
+            <DclContent />
+          </div>
+        ) : null}
+        {wearableType==='Other'||wearableType===null? (
+          <>
+            <div className={style.container}>
+            {dataInfoList === null ? (
+                  <>
+                    <p className={style.nothingInfo}>
+                      You don&apos;t have any wearable in this bag.
+                    </p>
+                  </>
+                ) : (
               <div
                 className={cn(
                   "grid grid-cols-1 sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-5 mt-5",
@@ -697,13 +727,6 @@ export default function Matic() {
                 )}
                 id="eventData"
               >
-                {dataInfoList === null ? (
-                  <>
-                    <p className={style.nothingInfo}>
-                      You don&apos;t have any wearable in this bag.
-                    </p>
-                  </>
-                ) : (
                   <>
                     {dataInfo.map((item) => {
                       return (
@@ -757,9 +780,9 @@ export default function Matic() {
                         </div>
                       );
                     })}
-                  </>
+                  </> </div>
                 )}
-              </div>
+             
 
               {/* <div style={{ marginTop: "20px" }}>
                 <DclContent />

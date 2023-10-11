@@ -2,8 +2,8 @@
 import api from '../../lib/api';
 
 export default async (req, res) => {
-  const { address } = req.query;
-  const data = await api.getNonce(address);
+  const { address ,message} = req.query;
+  const data = await api.getNonce(address,message);
 
   res.statusCode = 200;
 

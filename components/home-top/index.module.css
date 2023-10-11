@@ -206,6 +206,7 @@
   position: absolute;
   right: 180px;
   top: 25px;
+  cursor: pointer;
  }
  .btnBox{
    /* width: 1000px;
@@ -376,6 +377,7 @@ font-size: 25px;
   color: #fff;
   font-size: 25px;
   font-weight: 600;
+  cursor: pointer;
  }
  .titCon img:first-child{
   width: 40px;

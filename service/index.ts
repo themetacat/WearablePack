@@ -644,8 +644,8 @@ export const getDclParcelOwnerStats = async () => {
   return json;
 };
 
-export const getNonce = async (address: string) => {
-  const search = qs.stringify({ address }, { addQueryPrefix: true });
+export const getNonce = async (address: string,message) => {
+  const search = qs.stringify({ address,message }, { addQueryPrefix: true });
   const url = `/api/nonce${search}`;
   const res = await fetch(url);
   const json = await res.json();
@@ -653,8 +653,8 @@ export const getNonce = async (address: string) => {
   return json;
 };
 
-export const loginSignature = async (address: string, signature: string) => {
-  const search = qs.stringify({ address, signature }, { addQueryPrefix: false });
+export const loginSignature = async (address: string, signature: string,message) => {
+  const search = qs.stringify({ address, signature,message }, { addQueryPrefix: false });
   const url = `/api/login_signature`;
   const res = await fetch(url, {
     method: 'post',

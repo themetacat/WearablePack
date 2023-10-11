@@ -22,7 +22,7 @@ export default function Bags() {
   const [truncatedAddress, setTruncatedAddress] = useState(null);
   const textRef = React.useRef(null);
   const meta = {
-    title: ` ${SITE_NAME}`,
+    title: `Bags - ${SITE_NAME}`,
     description: META_DESCRIPTION,
   };
 

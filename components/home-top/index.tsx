@@ -182,7 +182,7 @@ export default function HomePage({ onClickHandler }: Props,ref) {
       );
       const requireNonce = React.useCallback(
         async (addr) => {
-          const res = await getNonce(addr);
+          const res = await getNonce(addr,'WearablePack');
           return resultHandler(res);
         },
         [resultHandler]
@@ -196,7 +196,7 @@ export default function HomePage({ onClickHandler }: Props,ref) {
               .request({ method: "personal_sign", params: [nonce, add] })
               .then(
                 async (signature) => {
-                  const result = await loginSignature(add, signature);
+                  const result = await loginSignature(add, signature,'WearablePack');
                   checkLoginStatu(result);
                 },
                 (error: any) => {

@@ -20,7 +20,7 @@
   height: 100vh;
     /* width: 100vw; */
     background-color: rgba(0,0,0,0.8);
-padding-top: 20px;
+
     
 }
 .supply{
@@ -40,6 +40,7 @@ padding-top: 20px;
     display: grid;
     padding-top: 20px;
     /* height: 300px; */
+    cursor: pointer;
     gap: 1.25rem;
     grid-template-columns: repeat(1, minmax(0, 1fr));
     grid-template-columns: repeat(4, minmax(0, 1fr));
@@ -111,8 +112,18 @@ font-weight: 600;
   }
 .cont{
     margin: 0 auto;
-    width: 1200px;
+    padding-left: 350px;
+    /* width: 1200px; */
     color: #fff;
+
+    background-color: rgba(0, 0, 0, 1)
+}
+.cont1{
+  margin: 0 auto;
+  padding-left: 350px;
+  padding-top: 20px;
+  color: #fff;
+  background-color: rgba(0, 0, 0, 1)
 }
   .idNum{
 
@@ -120,6 +131,66 @@ font-weight: 600;
   .TbaAdd{
     margin-top: 10px;
     cursor: pointer;
+  }
+  .fuzhi{
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+    display: flex;
+    background-color: #ebedf0;
+    justify-content: center;
+    align-items: center;  
+    position: relative;
+    margin-left: 10px;
+  }
+  /* .copiedTypeCon{
+    width: 100px;
+    background-color: aqua;
+    height: 30px;
+  } */
+  .copiedTypeCon {
+    display: inline-block;
+    position: absolute;
+    bottom: 30px;
+    background-color: #fff; /* 背景颜色 */
+    color: #000; /* 文本颜色 */
+    padding: 10px;
+    border-radius: 6px;
+    width: 180px; /* 对话框宽度，根据需求调整 */
+    margin: 0 auto; /* 水平居中 */
+    font-size: 12px;
+    text-align: center;
+  }
+  
+  /* 三角形小箭头样式 */
+  .copiedTypeCon::before {
+    content: '';
+    position: absolute;
+    top: 35px; /* 位于容器底部 */
+    left: 50%; /* 水平居中 */
+    transform: translateX(-50%); /* 水平居中 */
+    border-width: 10px; /* 箭头大小，根据需求调整 */
+    border-style: solid;
+    transform: translateX(-50%) rotate(180deg); /* 水平居中并旋转180度 */
+    border-color: transparent transparent #fff transparent; /* 箭头颜色与背景色一致 */
+  }
+  /* .copiedTypeCon::before {
+    bottom: 20px; 
+  } */
+  .copiedType{
+    /* width: 100px; */
+    width: 0;
+    height: 0;
+    border-top: 13px solid skyblue;
+    border-right:13px solid transparent;
+    border-left: 13px solid transparent;
+    position: absolute;
+    margin-top: -35px;
+  }
+  .fuzhi img{
+    width: 20px;
+    height: 20px;
+   
   }
   .totalNum{
     margin-top: 20px;
@@ -129,12 +200,11 @@ font-weight: 600;
   }
   .nothingInfo{
     width: 100vw;
-    margin-left: -50%;
     text-align: center;
     color: #515151;
     font-size: 26px;
-font-weight: 600;
-line-height: 300px;
+    font-weight: 600;
+    line-height: 300px;
   }
   
 .popUp{

@@ -232,7 +232,7 @@ export default function WalletBtn({ name, address, onClickHandler }: Props) {
 
   const requireNonce = React.useCallback(
     async (addr) => {
-      const res = await getNonce(addr);
+      const res = await getNonce(addr,'WearablePack');
       return resultHandler(res);
     },
     [resultHandler]
@@ -247,7 +247,7 @@ export default function WalletBtn({ name, address, onClickHandler }: Props) {
           .request({ method: "personal_sign", params: [nonce, add] })
           .then(
             async (signature) => {
-              const result = await loginSignature(add, signature);
+              const result = await loginSignature(add, signature,'WearablePack');
               checkLoginStatu(result);
             },
             (error: any) => {
@@ -352,7 +352,7 @@ export default function WalletBtn({ name, address, onClickHandler }: Props) {
         .request({ method: "personal_sign", params: [nonce, add] })
         .then(
           (resD) => {
-            loginSignature(add, resD).then(
+            loginSignature(add, resD,'WearablePack').then(
               (resData) => {
                 checkLoginStatu(resData);
               },

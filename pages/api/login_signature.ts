@@ -2,8 +2,8 @@
 import api from '../../lib/api';
 
 export default async (req, res) => {
-  const { address, signature } = req.body;
-  const data = await api.loginSignature(address, signature);
+  const { address, signature,message } = req.body;
+  const data = await api.loginSignature(address, signature,message);
 
   res.statusCode = 200;
 

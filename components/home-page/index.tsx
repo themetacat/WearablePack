@@ -197,7 +197,7 @@ export default function HomePage({ onClickHandler }: Props,ref) {
       );
       const requireNonce = React.useCallback(
         async (addr) => {
-          const res = await getNonce(addr);
+          const res = await getNonce(addr,'WearablePack');
           return resultHandler(res);
         },
         [resultHandler]
@@ -211,7 +211,7 @@ export default function HomePage({ onClickHandler }: Props,ref) {
               .request({ method: "personal_sign", params: [nonce, add] })
               .then(
                 async (signature) => {
-                  const result = await loginSignature(add, signature);
+                  const result = await loginSignature(add, signature,'WearablePack');
                   checkLoginStatu(result);
                 },
                 (error: any) => {
@@ -222,7 +222,7 @@ export default function HomePage({ onClickHandler }: Props,ref) {
         },
         [requireNonce, checkLoginStatu]
       );
-    const connectToChain = React.useCallback(async () => {
+      const connectToChain = React.useCallback(async () => {
         setLoading(true);
         setTimeout(() => {
           setLoading(false);
@@ -237,37 +237,107 @@ export default function HomePage({ onClickHandler }: Props,ref) {
           return;
         }
         try {
-          const networkId = await window.ethereum.request({
-            method: "net_version",
-          });
-          // console.log(networkId === "11155111", "networkId", networkId);
-          // 判断当前网络是否为 Ethereum Sepolia 网络
-          // await  window.ethereum.request({
-          //   method: 'wallet_switchEthereumChain',
-          //   params: [{ chainId: '11155111' }],
+          // const networkId = await window.ethereum.request({
+          //   method: "net_version",
           // });
-          if (networkId !== "11155111") {
-            // 根据需要跳转到引导转换网络的网页或执行其他逻辑
-            // window.open("https://example.com");
-            // return;
-            const chainId = "0x" + (11155111).toString(16);
-            // console.log(chainId, "chainId");
+          // // // console.log(networkId === "137", "networkId", networkId);
+          // // 判断当前网络是否为 Ethereum Sepolia 网络
+          // // await  window.ethereum.request({
+          // //   method: 'wallet_switchEthereumChain',
+          // //   params: [{ chainId: '137' }],
+          // // });
+          // if (networkId !== "137") {
+          //   // 根据需要跳转到引导转换网络的网页或执行其他逻辑
+          //   // window.open("https://example.com");
+          //   // return;
+          //   const chainId = "0x" + (137).toString(16);
+          //   // // console.log(chainId, "chainId");
     
-            await window.ethereum.request({
-              method: "wallet_switchEthereumChain",
-              params: [
-                {
-                  chainId: chainId,
+          //   await window.ethereum.request({
+          //     method: "wallet_switchEthereumChain",
+          //     params: [
+          //       {
+          //         chainId: chainId,
+          //       },
+          //     ],
+          //   });
+          // }
+          if (typeof window.ethereum !== 'undefined') {
+            // 创建一个 Web3 实例
+            const web3a = new Web3(window.ethereum);
+      
+            // 获取当前链Id
+            const chainId = await web3a.eth.getChainId();
+      
+            // 检查当前链Id是否为 Mumbai Testnet 的 137
+            if (chainId === 137) {
+              // console.log('Already connected to Mumbai Testnet');
+              web3.connect().then(
+                async (res) => {
+                  // console.log("connect==>", res);
+                  const { address: addr, provider } = res;
+                    // setSwitcherNet(false)
+                  connect(addr, provider);
+                  window.localStorage.setItem("metaMaskAddress", res.address);
                 },
-              ],
-            });
+                (err) => {
+                  setLoading(false);
+                }
+              );
+              window.localStorage.setItem("LoginType", "metaMask");
+              return;
+            }
+      
+            try {
+              // 切换到 Mumbai Testnet
+              await window.ethereum.request({
+                method: 'wallet_switchEthereumChain',
+    params: [
+      {
+        chainId: '0x89', // 使用十六进制表示的 chainID，对应十进制的 137
+      },
+    ],
+  });
+              // console.log('Switched to Mumbai Testnet');
+            } catch (error) {
+              // 检查错误类型，如果是因为网络不存在而报错，则添加 Mumbai Testnet
+              if (
+                error.code === 4902 || // MetaMask error code
+                (error.message && error.message.includes('networkId'))
+              ) {
+                try {
+                  await window.ethereum.request({
+                    method: 'wallet_addEthereumChain',
+                    params: [
+                      {
+                        chainId: '0x89', // 使用十六进制表示的 chainID，对应十进制的 137
+                        chainName: 'Polygon',
+                        nativeCurrency: {
+                          name: 'MATIC',
+                          symbol: 'MATIC',
+                          decimals: 18,
+                        },
+                        rpcUrls: ['https://rpc-mainnet.matic.network'],
+                      },
+                    ],
+                  });
+                  // console.log('Added Mumbai Testnet');
+                } catch (addError) {
+                  // console.error('Failed to add network:', addError);
+                }
+              } else {
+                // console.error('Failed to switch network:', error);
+              }
+            }
+          } else {
+            // console.log('MetaMask not detected');
           }
     
           web3.connect().then(
             async (res) => {
               // console.log("connect==>", res);
               const { address: addr, provider } = res;
-    
+                // setSwitcherNet(false)
               connect(addr, provider);
               window.localStorage.setItem("metaMaskAddress", res.address);
             },

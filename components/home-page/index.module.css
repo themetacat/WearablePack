@@ -301,6 +301,7 @@ font-size: 25px;
   position: absolute;
   right: 180px;
   top: 25px;
+  cursor: pointer;
  }
  .titCon{
   position: absolute;
@@ -310,6 +311,7 @@ font-size: 25px;
   color: #fff;
   font-size: 25px;
   font-weight: 600;
+  cursor: pointer;
  }
  .container{
   position: absolute;

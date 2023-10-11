@@ -854,8 +854,8 @@ const url = 'https://api.metacat.world/api/v1/set_babylon_model_info'; // 替换
     return json;
   }
 
-  public async getNonce(address: string): Promise<any> {
-    const search = qs.stringify({ address }, { addQueryPrefix: true });
+  public async getNonce(address: string,message): Promise<any> {
+    const search = qs.stringify({ address,message }, { addQueryPrefix: true });
     const url = `${this.url}/user/get_nonce${search}`;
     const res = await fetch(url);
     const json = await res.json();
@@ -863,8 +863,8 @@ const url = 'https://api.metacat.world/api/v1/set_babylon_model_info'; // 替换
     return json;
   }
 
-  public async loginSignature(address: string, signature: string): Promise<any> {
-    const search = qs.stringify({ address, signature }, { addQueryPrefix: false });
+  public async loginSignature(address: string, signature: string,message): Promise<any> {
+    const search = qs.stringify({ address, signature,message }, { addQueryPrefix: false });
     const url = `${this.url}/user/login_signature`;
     const res = await fetch(url, {
       method: 'post',
