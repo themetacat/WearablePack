@@ -46,6 +46,7 @@
     grid-template-columns: repeat(4, minmax(0, 1fr));
   }
   .boxContent{
+    cursor: pointer;
     width: 270px;
     height: 340px;
     background-color: black;

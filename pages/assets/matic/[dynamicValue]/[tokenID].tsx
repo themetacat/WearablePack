@@ -67,7 +67,7 @@ export default function Matic() {
   const [dataInfoList, setDataInfoList] = React.useState([] || null);
 
   const meta = {
-    title: `${title} ${SITE_NAME}`,
+    title: `${title} - ${SITE_NAME}`,
     description: META_DESCRIPTION,
   };
 
