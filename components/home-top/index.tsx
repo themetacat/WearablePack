@@ -1388,7 +1388,6 @@ web3.eth.getBalance(walletAddress)
       </div>
        
         <div className={cn(profile.address?style.Addr:style.Addr1)}>
-          {/* <ul className={cn("list-none mt-2 z-20")}></ul> */}
           {showMenu && renderContent}
         </div>
        
