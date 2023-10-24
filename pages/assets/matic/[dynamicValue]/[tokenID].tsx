@@ -3,18 +3,13 @@ import HomePage from "../../../../components/home-page";
 import Page from "../../../../components/page";
 import { toast } from "react-hot-toast";
 import { SITE_NAME, META_DESCRIPTION } from "../../../../common/const";
-// import WalletConnect from "@walletconnect/client";
-// import  WalletConnectProvider  from '@walletconnect/web3-provider';
-import ModalStore from "@/store/ModalStore";
-import { useWalletConnect } from "@walletconnect/react-native-dapp";
-// import { buildApprovedNamespaces } from '@walletconnect/utils'
-// import { SignClientTypes } from '@walletconnect/types'
+
+import Status from "../../../../components/status";
+
 import dynamic from "next/dynamic";
 import VoxFiled from '../vox';
 import DclContent from '../dcl';
-// const VoxFiled = dynamic(import("../vox"), { ssr: false });
-// const DclContent = dynamic(import("../dcl"), { ssr: false });
-// import { SessionTypes,ICore } from '@walletconnect/types';
+
 import { Core } from "@walletconnect/core";
 import { Web3Wallet } from "@walletconnect/web3wallet";
 import QRCodeModal from "@walletconnect/qrcode-modal";
@@ -62,6 +57,7 @@ export default function Matic() {
   const [copyText, setCopytext] = useState(false);          
   const [popUp, setPopUp] = useState(false);
   const [clipboard, setClipboard] = useState(false);
+  const [loading, setLoading] = React.useState(false);
   const [copied, setCopied] = useState(false);
   const [editNum, setEditNum] = useState("WalletConnect URI");
   const [dataInfoList, setDataInfoList] = React.useState([] || null);
@@ -83,6 +79,7 @@ export default function Matic() {
   const handleMint = useCallback(() => {
     const getData = async () => {
       try {
+        setLoading(true)
         const response = await getBagsDetail(tokenboundAccountNum); // 假设 getBagsDetail 是一个异步函数
         // // console.log(response, 2333333);
         // let wearableType =null;
@@ -91,6 +88,7 @@ export default function Matic() {
         if (response.ownedNfts.length !== 0) {
           //         }else{
           response.ownedNfts.map((item) => {
+            setLoading(false)
             // // console.log(item.tokenUri.raw, 2333);
             // setwearableType(item.tokenUri.raw);
             if (wearableType === null) {
@@ -149,7 +147,7 @@ export default function Matic() {
   const handleBag = useCallback(() => {
     const getData = async () => {
       // // console.log(router.query.tokenId);
-
+      setLoading(true)
       try {
         const response = await getBagsNum(tokenID); // 假设 getBagsDetail 是一个异步函数
         const wearableTypeEach = response.tokenUri.raw;
@@ -157,7 +155,7 @@ export default function Matic() {
         // const substring = wearableTypeEach.substring(0, 28);
         // setwearableType(response.tokenUri.raw);
         // // console.log(substring,3333);
-
+        setLoading(false)
         setTitle(response.title);
         // // console.log(response, 'response');
       } catch (error) {
@@ -661,20 +659,18 @@ export default function Matic() {
         className={cn("", popUp === true ? style.page1 : style.page)}
       >
         <HomePage />
+        {loading === true ? <div className={style.loadingSet}><Status mini={true} status="loading" /></div> : null}
         <div className={style.cont}>
         <p className={style.idNum}>{title}</p>
                 <div style={{ display: "flex" }}>
-                  <div style={{display:"flex"}}>
+                  <div style={{display:"flex"}} className={style.btn_group}>
                     <p className={style.TbaAdd}>
                       Wallet:&nbsp;{tokenboundAccountNum}
                       </p>
                     <div className={style.fuzhi} onMouseEnter={()=>{setClipboard(true)}} onMouseLeave={() => setClipboard(false)}  onClick={handleCopyClick}><img src={copyText===false?'/images/icon/fuzhi.png':'/images/icon/duihao.png'} alt="" />  
-                    {/* <div  className={style.copiedTypeCon}> */}
-                    {/* <div className={style.copiedType}></div> */}
                     {clipboard===true?<span className={style.copiedTypeCon}>Copy address to clipboard</span>:null}
                     {copied===true?<span className={style.copiedTypeCon}>copied</span>:null}
-                    {/* </div> */}
-                   </div></div>
+                   </div>
                   
                   {getCode === true ? (
                     <div
@@ -694,8 +690,9 @@ export default function Matic() {
                     </div>
                   )}
 
-                  <div className={style.btnAccount} onClick={RefreshMetadata}>
+                  {/* <div className={style.btnAccount} onClick={RefreshMetadata}>
                     Refresh metadata
+                  </div> */}
                   </div>
                 </div>
                <p className={style.totalNum}>{dataInfo.length} {wearableType==='voxels'||wearableType==='Decentraland'?'Wearables':'Assets'}</p>

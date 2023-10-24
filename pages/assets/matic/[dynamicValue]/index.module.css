@@ -130,7 +130,6 @@ font-weight: 600;
 
   }
   .TbaAdd{
-    margin-top: 10px;
     cursor: pointer;
   }
   .fuzhi{
@@ -195,11 +194,15 @@ font-weight: 600;
     height: 20px;
    
   }
+  .btn_group{
+    align-items: center;
+    margin-top: 10px;
+  }
   .totalNum{
-    margin-top: 20px;
-    font-size: 20px;
+    margin-top: 10px;
+    /* font-size: 20px;
     font-family: 700;
-    color: #9d9d9e;
+    color: #9d9d9e; */
   }
   .nothingInfo{
     width: 100vw;

@@ -25,9 +25,20 @@
   transform: rotate(3600deg);
   -webkit-transition: -webkit-transform 5s linear;
   transition: transform 5s linear;
+  
 }
-
-
+.overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background-color: rgba(0, 0, 0, 0.5); /* 半透明的黑色背景 */
+  z-index: 9999; /* 设置一个高的 z-index 值，确保在页面元素之上 */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
 
 .join{
 

@@ -67,10 +67,11 @@
  }
  
  .menuItem:nth-child(1){
-   border-radius: 6px 6px 0px 0px;
+   border-radius: 16px 16px 0px 0px;
+   margin-top: 8px;
  }
  .menuItem:last-child{
-   border-radius:0px 0px 6px 6px ;
+   border-radius:0px 0px 16px 16px ;
  }
  
  .last{
@@ -207,6 +208,11 @@
   right: 180px;
   top: 25px;
   cursor: pointer;
+  display: flex;
+  margin-right: 32px;
+ }
+ .iconSvg a{
+  margin-left: 32px;
  }
  .btnBox{
    /* width: 1000px;
@@ -366,8 +372,8 @@ font-size: 25px;
  .Addr{
   position: absolute;
   top: 60px;
-  right: 10px;
-  ndex: 9999;
+  right: 20px;
+  z-index: 9999;
  }
  .titCon{
   position: absolute;
@@ -416,9 +422,9 @@ font-size: 25px;
 
  }
  .loadingSet{
-  position: absolute;
+  /* position: absolute;
   top: 50%;
   left: 50%;
-  transform: translate(-55%,90%);
+  transform: translate(-55%,90%); */
   z-index: 9999999;
  }

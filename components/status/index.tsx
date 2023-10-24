@@ -24,8 +24,10 @@ export default function Status({ status, retry, addWork, addWorkWerable, unloadB
   );
   if (status === 'loading') {
     return (
-      <div className={cn(commonCls, 'animate-spin')}>
+      <div className={style.overlay}>
+      <div className={cn(commonCls, 'animate-spin',)}>
         <img src="/images/loading.png" className={cn('animate-spin  w-8 h-8' ,style.commonCls1)} />
+      </div>
       </div>
     );
   }
