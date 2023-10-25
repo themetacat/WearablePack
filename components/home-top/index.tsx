@@ -7,6 +7,7 @@ import Rekv from "rekv";
 import Link from "next/link";
 import Web3 from "web3";
 import { toast } from "react-hot-toast";
+import Footer from '../footer'
 import { useWalletProvider } from "../web3modal";
 import { TorusWalletAdapter } from "@web3auth/torus-evm-adapter";
 import { SITE_NAME, META_DESCRIPTION } from "../../common/const";
@@ -1394,7 +1395,8 @@ web3.eth.getBalance(walletAddress)
        
         <div className={style.container}>
           <p>Pack Your Wearable.</p>
-          <p  className={style.PBox}>Use ERC-6551 to package and sell your Wearables.</p>
+          <p  className={style.PBox}>Use ERC-6551 to 
+          package and sell your Wearables.</p>
           <button className={style.bttBox} onClick={()=>{
             setMintContent(!mintContent)
           }}
@@ -1478,6 +1480,9 @@ web3.eth.getBalance(walletAddress)
           </div>
       </>
     :null}
+      <div style={{position: 'fixed',bottom: '0px',width:"100%"}}>
+      <Footer/>
+      </div>
     </>
    </Page>
   )

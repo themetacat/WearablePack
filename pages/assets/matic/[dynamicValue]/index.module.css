@@ -149,6 +149,10 @@ font-weight: 600;
     background-color: aqua;
     height: 30px;
   } */
+  .voxFiled{
+    background-color: #16141a;
+    padding-top: 20px;
+  }
   .copiedTypeCon {
     
     display: inline-block;

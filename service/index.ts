@@ -72,6 +72,17 @@ export const getModelInfo = async (token_id) => {
   return json;
 };
 
+export const get_wearable_pack_metadata = async (token_id) => {
+  const search = qs.stringify({ token_id }, { addQueryPrefix: false });
+  // const url = `/api/get_wearable_pack_metadata/${token_id}`;
+  const url = `https://api.metacat.world/api/v1/get_wearable_pack_metadata/${token_id}`; // 将查询字符串添加到 URL 中
+  const res = await fetch(url);
+  
+  const json = await res.json();
+
+  return json;
+};
+
 export const rmBabylonModel = async (token,token_id) => {
   const search = qs.stringify({ token_id }, { addQueryPrefix: true });
   const url = `/api/rm_babylon_model${search}`;

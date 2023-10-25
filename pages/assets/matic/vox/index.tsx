@@ -513,14 +513,21 @@ const metaCatAtk = window.localStorage.getItem("METACAT_atk");
     ).toLowerCase();
   }
 
-  useEffect(() => {
-    const canvas = document.getElementById("renderCanvas");
-    // console.log(canvas);
 
+
+
+  useEffect(() => {
+    // const canvasq = document.getElementsByClassName(style.canvas)[0];
+    // const context = (canvasq as HTMLCanvasElement).getContext('2d');
+  
+    // // 设置填充颜色为黑色
+    // context.fillStyle = 'black';
+    // 清除或重置Canvas状态
+
+    const canvas = document.getElementById("renderCanvas");
     const engine = new BABYLON.Engine(canvas as HTMLCanvasElement, true);
-    // console.log(engine, 222);
    
-   
+
     const chain_info = {
       1: "eth",
       137: "polygon",
@@ -1833,8 +1840,22 @@ const matches = regex.exec(attributesData[0]);
     });
     onLoadCostume()
 
+
+    
+    document.addEventListener('DOMContentLoaded', function () {
+      const canvas = document.getElementById("renderCanvas")  as HTMLCanvasElement;
+      const context = canvas.getContext('2d');
+    console.log(2322323)
+      if (context) {
+        // 你的绘图代码
+      } else {
+        console.error('无法获取2D上下文。');
+      }
+    });
+  
+
   }, []);
- 
+
 
   const onChangeEdiumY =(event) => {
     // setEditNumPoY(event.target.value);
@@ -1909,7 +1930,7 @@ const matches = regex.exec(attributesData[0]);
         className="active"
         style={{ position: "relative", }}
       >
-        <canvas id="renderCanvas" className={style.canvas}></canvas>
+       <canvas id="renderCanvas" className={style.canvas}  style={{backgroundColor:"red"}}></canvas>
         <div style={{ position: "absolute", top: "10px" }}>
           <button className={style.btn} id="gizmo-position">Position</button>
           <button className={style.btn} id="gizmo-rotation">Rotation</button>
@@ -1917,8 +1938,8 @@ const matches = regex.exec(attributesData[0]);
         </div>
         <div style={{ position: "absolute", right: "10px", top: "10px" ,width:"30%"}}>
           <div className="editor-field position">
-            <label>Position</label>
-            <div className="fields">
+            <label className={style.lable}>Position</label>
+            <div className="fields" style={{display:"flex"}}>
               <input
                 id="position[x]"
                 type="number"
@@ -1930,6 +1951,7 @@ const matches = regex.exec(attributesData[0]);
                   updatePosition("position", 0, inputElement.value);
                 }}
                 onChange={onChangeEdiumX}
+                className={style.inputElement} // 添加input-element类
               />
               <input
                 id="position[y]"
@@ -1942,6 +1964,7 @@ const matches = regex.exec(attributesData[0]);
                     const inputElement = event.target as HTMLInputElement;
                   updatePosition("position", 1, inputElement.value);
                 }}
+                className={style.inputElement} 
                 // onChange={(event) => {
                 //   console.log(event);
                 //   console.log(event.target.value,22);
@@ -1962,13 +1985,14 @@ const matches = regex.exec(attributesData[0]);
                   updatePosition("position", 2, inputElement.value);
                 }}
                 onChange={onChangeEdiumZ}
+                className={style.inputElement} 
               />
               {/* onInput="updatePosition('position', 2, this.value)"
                         onChange="updatePosition('position', 2, this.value)"/> */}
             </div>
           </div>
           <div className="editor-field rotation">
-            <label>Rotation</label>
+          <label className={style.lable}>Rotation</label>
             <div className="fields">
               <input
                 id="rotation[x]"
@@ -1976,6 +2000,7 @@ const matches = regex.exec(attributesData[0]);
                 step="2"
                 title="x"
                 value={editNumRoX.x}
+                className={style.inputElement} 
                 onInput={(event) => {
                     const inputElement = event.target as HTMLInputElement;
                   updatePosition("rotation", 0, inputElement.value);
@@ -1987,6 +2012,7 @@ const matches = regex.exec(attributesData[0]);
                 type="number"
                 step="2"
                 title="y"
+                 className={style.inputElement} 
                 value={editNumRoX.y}
                 onInput={(event) => {
                     const inputElement = event.target as HTMLInputElement;
@@ -1998,6 +2024,7 @@ const matches = regex.exec(attributesData[0]);
                 id="rotation[z]"
                 type="number"
                 step="2"
+                className={style.inputElement} 
                 title="z"
                 value={editNumRoX.z}
                 onInput={(event) => {
@@ -2009,16 +2036,16 @@ const matches = regex.exec(attributesData[0]);
             </div>
           </div>
           <div className="editor-field scale-all">
-            <label>Scale</label>
+          <label className={style.lable}>Scale</label>
             <div className="fields">
               <input
                 id="scale[x]"
                 type="number"
+                className={style.inputElement} 
                 step="0.01"
                 title="all"
                 value={editNumSaX.x}
                 onInput={(event) => {
-                  
                       const inputElement = event.target as HTMLInputElement;
                   updatePosition("scale", 0, inputElement.value);
                 }}
@@ -2028,6 +2055,7 @@ const matches = regex.exec(attributesData[0]);
                 id="scale[y]"
                 type="number"
                 step="0.01"
+                className={style.inputElement} 
                 title="all"
                 value={editNumSaX.y}
                 onInput={(event) => {
@@ -2039,6 +2067,7 @@ const matches = regex.exec(attributesData[0]);
               <input
                 id="scale[z]"
                 type="number"
+                className={style.inputElement} 
                 step="0.01"
                 title="all"
                 value={editNumSaX.z}
@@ -2055,7 +2084,7 @@ const matches = regex.exec(attributesData[0]);
             {/* <button className={style.buton} id="download">Download</button> */}
             {/* <button className={style.buton} id="upload">Upload</button> */}
           </div>
-          <div id="wearable_list"></div>
+          <div id="wearable_list" style={{color:"#fff"}}></div>
         </div>
       </div>
     </>

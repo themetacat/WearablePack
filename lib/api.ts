@@ -414,14 +414,22 @@ fetch(url, {
     const search = qs.stringify({ token_id}, { addQueryPrefix: true });
     const url = `https://api.metacat.world/api/v1/get_babylon_model_info?token_id=${token_id}`;
     // const url = `http://47.243.184.241/api/v1/get_babylon_model_info?token_id=${token_id}`;
-
-
     const res = await fetch(url);
-
-    
     const json = await res.json();
 
     return json;
+  }
+
+  public async get_wearable_pack_metadata(token_id): Promise<any> {
+    
+    const search = qs.stringify({ token_id }, { addQueryPrefix: false });
+  // const url = `/api/get_wearable_pack_metadata/${token_id}`;
+  const url = `https://api.metacat.world/api/v1/get_wearable_pack_metadata/${token_id}`; // 将查询字符串添加到 URL 中
+  const res = await fetch(url);
+  
+  const json = await res.json();
+
+  return json;
   }
 
   public async rmBabylonModel(token: string,token_id): Promise<any> {

@@ -80,61 +80,64 @@ export default function Matic() {
     const getData = async () => {
       try {
         setLoading(true)
-        const response = await getBagsDetail(tokenboundAccountNum); // 假设 getBagsDetail 是一个异步函数
-        // // console.log(response, 2333333);
-        // let wearableType =null;
-        // // console.log(tokenboundAccountNum, 333);
-        setDataInfo(response.ownedNfts);
-        if (response.ownedNfts.length !== 0) {
-          //         }else{
-          response.ownedNfts.map((item) => {
-            setLoading(false)
-            // // console.log(item.tokenUri.raw, 2333);
-            // setwearableType(item.tokenUri.raw);
-            if (wearableType === null) {
-              
-              if (item.tokenUri.raw.includes("https://www.cryptovoxels.com")) {
-                // wearableType='voxels'
-                setwearableType("voxels");
-              } else if (
-                item.tokenUri.raw.includes("https://peer.decentraland.org")
-              ) {
-                setwearableType("Decentraland");
-              } else {
-                setwearableType("Other");
-              }
-              // // console.log(wearableType,222);
-            } else {
-              // // console.log(2333333);
-
-              if (item.tokenUri.raw.includes("https://www.cryptovoxels.com")) {
-                if (wearableType !== "voxels") {
-                  // wearableType='Other'
-                  setwearableType("Other");
-                  
-                  return;
-                }
+        if(tokenboundAccountNum){
+          const response = await getBagsDetail(tokenboundAccountNum); // 假设 getBagsDetail 是一个异步函数
+          // // console.log(response, 2333333);
+          // let wearableType =null;
+          // // console.log(tokenboundAccountNum, 333);
+          setDataInfo(response.ownedNfts);
+          if (response.ownedNfts.length !== 0) {
+            //         }else{
+            response.ownedNfts.map((item) => {
+              setLoading(false)
+              // // console.log(item.tokenUri.raw, 2333);
+              // setwearableType(item.tokenUri.raw);
+              if (wearableType === null) {
                 
-              } else if (
-                item.tokenUri.raw.includes("https://peer.decentraland.org")
-              ) {
-                if (wearableType !== "Decentraland") {
+                if (item.tokenUri.raw.includes("https://www.cryptovoxels.com")) {
+                  // wearableType='voxels'
+                  setwearableType("voxels");
+                } else if (
+                  item.tokenUri.raw.includes("https://peer.decentraland.org")
+                ) {
+                  setwearableType("Decentraland");
+                } else {
                   setwearableType("Other");
-                  return;
                 }
-
-              // } else {
-              //   if (wearableType !== "Other") {
-              //     return;
-              //   }
+                // // console.log(wearableType,222);
+              } else {
+                // // console.log(2333333);
+  
+                if (item.tokenUri.raw.includes("https://www.cryptovoxels.com")) {
+                  if (wearableType !== "voxels") {
+                    // wearableType='Other'
+                    setwearableType("Other");
+                    
+                    return;
+                  }
+                  
+                } else if (
+                  item.tokenUri.raw.includes("https://peer.decentraland.org")
+                ) {
+                  if (wearableType !== "Decentraland") {
+                    setwearableType("Other");
+                    return;
+                  }
+  
+                // } else {
+                //   if (wearableType !== "Other") {
+                //     return;
+                //   }
+                }
               }
-            }
-          });
- 
-
-        } else {
-          setDataInfoList(null);
+            });
+   
+  
+          } else {
+            setDataInfoList(null);
+          }
         }
+       
         // // console.log(dataInfo, 666);
       } catch (error) {
         // console.error(error);
@@ -149,14 +152,17 @@ export default function Matic() {
       // // console.log(router.query.tokenId);
       setLoading(true)
       try {
-        const response = await getBagsNum(tokenID); // 假设 getBagsDetail 是一个异步函数
-        const wearableTypeEach = response.tokenUri.raw;
-        // // console.log(wearableTypeEach,666);
-        // const substring = wearableTypeEach.substring(0, 28);
-        // setwearableType(response.tokenUri.raw);
-        // // console.log(substring,3333);
-        setLoading(false)
-        setTitle(response.title);
+        if(tokenID){
+          const response = await getBagsNum(tokenID); // 假设 getBagsDetail 是一个异步函数
+          const wearableTypeEach = response.tokenUri.raw;
+          // // console.log(wearableTypeEach,666);
+          // const substring = wearableTypeEach.substring(0, 28);
+          // setwearableType(response.tokenUri.raw);
+          // // console.log(substring,3333);
+          setLoading(false)
+          setTitle(response.title);
+        }
+     
         // // console.log(response, 'response');
       } catch (error) {
         // console.error(error);
@@ -698,7 +704,7 @@ export default function Matic() {
                <p className={style.totalNum}>{dataInfo.length} {wearableType==='voxels'||wearableType==='Decentraland'?'Wearables':'Assets'}</p>
              </div>
         {wearableType==='voxels'? (
-          <div style={{ marginTop: "20px" }}>
+          <div className={style.voxFiled}>
             <VoxFiled />
           </div>
         ) : null}
