@@ -190,6 +190,7 @@ export default function HomePage({ onClickHandler }: Props,ref) {
       );
     const connect = React.useCallback(
         async (addr, providerCon) => {
+          setLoading(true)
           const nonceData = await requireNonce(addr);
           if (nonceData) {
             const { address: add, nonce } = nonceData;
@@ -205,6 +206,7 @@ export default function HomePage({ onClickHandler }: Props,ref) {
                 }
               );
           }
+          setLoading(false)
         },
         [requireNonce, checkLoginStatu]
       );
@@ -275,6 +277,7 @@ export default function HomePage({ onClickHandler }: Props,ref) {
             }
       
             try {
+              
               // 切换到 Mumbai Testnet
               await window.ethereum.request({
                 method: 'wallet_switchEthereumChain',
@@ -318,7 +321,7 @@ export default function HomePage({ onClickHandler }: Props,ref) {
           } else {
             // console.log('MetaMask not detected');
           }
-    
+   
           web3.connect().then(
             async (res) => {
               // console.log("connect==>", res);
@@ -331,6 +334,7 @@ export default function HomePage({ onClickHandler }: Props,ref) {
               setLoading(false);
             }
           );
+          setLoading(false)
           window.localStorage.setItem("LoginType", "metaMask");
         } catch {
           setLoading(false);
