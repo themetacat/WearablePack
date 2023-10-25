@@ -380,7 +380,7 @@ fetch(url, {
     body: JSON.stringify(data),
 })
 .then(response => response.json())
-.then(data => console.log(data.data,'.............'))
+.then(data => console.log(data,))
 .catch(error => console.error('Error:', error));
   }
 
@@ -497,7 +497,7 @@ const url = 'https://api.metacat.world/api/v1/set_babylon_model_info'; // 替换
     .then(response => response.json())
     .then(data => {
       // 处理响应数据
-      console.log(data,'数据');
+      // console.log(data,'数据');
     })
     .catch(error => {
       console.error('Error:', error,'cuowu');
