@@ -16,14 +16,28 @@
     background-color: aliceblue;
     margin-left: 10px;
 }
+.inputElement{
+    /* height: 38px; */
+    border: 1px solid var(--gray);
+    border-radius: 6px;
+    /* display: flex; */
+    width: 30%;
+    margin-left: 5px;
+    align-items: center;
+    padding: 0 12px;
+    margin-bottom: 8px;
+}
+.lable{
+    color: #fff;
+}
 .buton{
-    width: auto;
-    padding: 5px;
-    background-color: aliceblue;
-color: black;
-margin-top: 10px;
-margin-bottom: 10px;
-margin-right: 10px;
-cursor: pointer;
-border-radius: 10px;
+    width: 150px;
+    color: #4d4d50;
+    height: 30px;
+    background-color: #fff;
+    margin-bottom: 10px;
+    text-align: center;
+    cursor: pointer;
+    border-radius: 5px;
+
 }

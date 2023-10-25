@@ -31,7 +31,7 @@
     "ao-mesher": "^0.2.10",
     "babylonjs": "^6.21.2",
     "babylonjs-loaders": "^6.19.1",
-    "babylonjs-materials": "^6.19.1",
+    "babylonjs-materials": "^6.25.0",
     "eslint-config-next": "13.2.3",
     "function-bind": "^1.1.1",
     "leaflet": "^1.7.1",

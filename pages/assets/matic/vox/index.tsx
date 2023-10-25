@@ -636,17 +636,17 @@ const metaCatAtk = window.localStorage.getItem("METACAT_atk");
       );
       skybox.isPickable = false;
 
-      // const skyMaterial = new BABYLON.GradientMaterial("skybox/horizon", scene);
-      // skyMaterial.offset = 0;
-      // skyMaterial.scale = -0.01;
-      // skyMaterial.topColor.set(0.7, 0.7, 0.7);
-      // skyMaterial.bottomColor.set(1, 1, 1);
-      // skyMaterial.backFaceCulling = false;
-      // skyMaterial.disableLighting = true;
-      // skyMaterial.blockDirtyMechanism = true;
-      // skybox.material = skyMaterial;
+      const skyMaterial = new window.BABYLON.GradientMaterial("skybox/horizon", scene as any);
+      skyMaterial.offset = 0;
+      skyMaterial.scale = -0.01;
+      skyMaterial.topColor.set(0.7, 0.69, 0.73);
+      skyMaterial.bottomColor.set(0.7, 0.69, 0.73);
+                skyMaterial.backFaceCulling = false;
+                skyMaterial.disableLighting = true;
+                skyMaterial.blockDirtyMechanism = true;
+                (skybox as any).material = skyMaterial;
 
-      // createLightRing(scene, camera)
+      createLightRing(scene, camera)
 
       // 设置高亮层
       const highlightLayer = new BABYLON.HighlightLayer("selected", scene, {
@@ -740,37 +740,37 @@ const metaCatAtk = window.localStorage.getItem("METACAT_atk");
     // 坐标向量
     const gizmoManager = get_GizmoManager();
 
-    // function createLightRing(scene, camera) {
-    //     const ringTransformNode = new BABYLON.TransformNode("ring", scene);
-    //     ringTransformNode.setParent(camera);
-    //     ringTransformNode.position.z = -5;
+    function createLightRing(scene, camera) {
+        const ringTransformNode = new BABYLON.TransformNode("ring", scene);
+        ringTransformNode.setParent(camera);
+        ringTransformNode.position.z = -5;
 
-    //     const redLight = new BABYLON.PointLight("redLight", new BABYLON.Vector3(0, 10, 0), scene);
-    //     redLight.diffuse.set(0.1, 0.1, 0.01);
-    //     redLight.specular.set = (1, 0.7647058823529411, 0.5411764705882353)
-    //     redLight.parent = ringTransformNode;
+        const redLight = new BABYLON.PointLight("redLight", new BABYLON.Vector3(0, 10, 0), scene);
+        redLight.diffuse.set(0.1, 0.1, 0.01);
+        redLight.specular.set  (1, 0.7647058823529411, 0.5411764705882353)
+        redLight.parent = ringTransformNode;
 
-    //     const greenLight = new BABYLON.PointLight("greenLight", new BABYLON.Vector3(1, -5, 0), scene);
-    //     greenLight.diffuse.set = (0.2784313725490196, 0.6352941176470588, 1);
-    //     greenLight.specular.set(0, 0, 0);
-    //     greenLight.intensity = 0.2;
-    //     greenLight.parent = ringTransformNode;
+        const greenLight = new BABYLON.PointLight("greenLight", new BABYLON.Vector3(1, -5, 0), scene);
+        greenLight.diffuse.set  (0.2784313725490196, 0.6352941176470588, 1);
+        greenLight.specular.set(0, 0, 0);
+        greenLight.intensity = 0.2;
+        greenLight.parent = ringTransformNode;
 
-    //     const blueLight = new BABYLON.PointLight("blueLight", new BABYLON.Vector3(-8.66, -1, 2), scene);
-    //     blueLight.diffuse.set = { b: 0.4235294117647059, g: 0.7058823529411765, r: 1 };
-    //     blueLight.specular.set(0, 0, 0);
-    //     blueLight.intensity = 0.2;
-    //     blueLight.parent = ringTransformNode;
+        const blueLight = new BABYLON.PointLight("blueLight", new BABYLON.Vector3(-8.66, -1, 2), scene);
+        blueLight.diffuse.set ( 1,  0.7058823529411765,0.4235294117647059,);
+        blueLight.specular.set(0, 0, 0);
+        blueLight.intensity = 0.2;
+        blueLight.parent = ringTransformNode;
 
-    //     const rotationAnimation = new BABYLON.Animation("lightRing", "rotation.z", 30, BABYLON.Animation.ANIMATIONTYPE_FLOAT, BABYLON.Animation.ANIMATIONLOOPMODE_CYCLE);
-    //     const rotationKeys = [
-    //         { frame: 0, value: 0 },
-    //         { frame: 300, value: 2 * Math.PI }
-    //     ];
-    //     rotationAnimation.setKeys(rotationKeys);
-    //     ringTransformNode.animations = [rotationAnimation];
-    //     scene.beginAnimation(ringTransformNode, 0, 300, true);
-    // }
+        const rotationAnimation = new BABYLON.Animation("lightRing", "rotation.z", 30, BABYLON.Animation.ANIMATIONTYPE_FLOAT, BABYLON.Animation.ANIMATIONLOOPMODE_CYCLE);
+        const rotationKeys = [
+            { frame: 0, value: 0 },
+            { frame: 300, value: 2 * Math.PI }
+        ];
+        rotationAnimation.setKeys(rotationKeys);
+        ringTransformNode.animations = [rotationAnimation];
+        scene.beginAnimation(ringTransformNode, 0, 300, true);
+    }
 
     function getWearableURL(droppedWearable) {
       // ${chain_info[droppedWearable.chain_id]}
@@ -1930,7 +1930,7 @@ const matches = regex.exec(attributesData[0]);
         className="active"
         style={{ position: "relative", }}
       >
-       <canvas id="renderCanvas" className={style.canvas}  style={{backgroundColor:"red"}}></canvas>
+       <canvas id="renderCanvas" className={style.canvas}></canvas>
         <div style={{ position: "absolute", top: "10px" }}>
           <button className={style.btn} id="gizmo-position">Position</button>
           <button className={style.btn} id="gizmo-rotation">Rotation</button>

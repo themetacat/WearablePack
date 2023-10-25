@@ -314,9 +314,7 @@ export default function Matic() {
       const ownerOfAddr = contract.methods.ownerOf(tokenID).call({});
       // // console.log(ownerOfAddr,"你想要的地址");
       // // console.log(ownerOfAddr===addR,'结果啊');
-      console.log(tokenID,addR);
       ownerOfAddr.then((ownerOfAddress) => {
-        console.log(ownerOfAddress,223);
         
         if (ownerOfAddress === addR) {
           const walletClient: WalletClient = createWalletClient({
@@ -709,7 +707,7 @@ export default function Matic() {
           </div>
         ) : null}
         {wearableType==='Decentraland' ? (
-          <div style={{ marginTop: "20px" }}>
+        <div className={style.voxFiled}>
             <DclContent />
           </div>
         ) : null}

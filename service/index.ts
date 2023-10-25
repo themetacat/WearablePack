@@ -144,7 +144,7 @@ export const setModelInfo = async (token,costume) => {
     .then(response => response.json())
     .then(data => {
       // 处理响应数据
-      console.log(data,);
+      // console.log(data,);
     })
     .catch(error => {
       console.error('Error:', error,);

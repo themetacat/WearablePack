@@ -226,7 +226,6 @@ export default function DclContent() {
   }
   useEffect(() => {
   
-    console.log(router.query.tokenID);
     
 //     if(router.query.tokenID){
 //       console.log(55555555555555);
@@ -373,7 +372,6 @@ export default function DclContent() {
           all_last_rotation.current[attachmentId.current] = t.rotation;
           // console.log(all_last_rotation.current[attachmentId.current],"/////////////////////",t.rotation);
           const metaCatAtk = window.localStorage.getItem("METACAT_atk");
-          console.log(costume,55555555);
           setModelInfo(metaCatAtk, {...costume,token_id:router.query.tokenID});
           return true;
         }
@@ -410,7 +408,6 @@ if(router){
 
 
       const getModelInfoData = getModelInfo(router.query.tokenID);
-console.log(getModelInfoData);
 
       getModelInfoData.then(async (getModelInfoItem) => {
 
@@ -422,7 +419,6 @@ console.log(getModelInfoData);
 
           for (let att of attachments) {
             if(!att.type||att.type!='dcl'){continue}
-           console.log('=============');
            
             // (window as any).droppedWearable = att;
             windowVal['droppedWearable']= att
@@ -535,18 +531,68 @@ console.log(getModelInfoData);
       );
       skybox.isPickable = false;
 
-      //  const skyMaterial = new BABYLON.GradientMaterial("skybox/horizon", scene);
-      //  skyMaterial.offset = 0;
-      //  skyMaterial.scale = -0.01;
-      //  skyMaterial.topColor.set(0.8, 0.8, 1);
-      //  skyMaterial.bottomColor.set(1, 1, 1);
-      //  skyMaterial.backFaceCulling = false;
-      //  skyMaterial.disableLighting = true;
-      //  skyMaterial.blockDirtyMechanism = true;
-      //  skybox.material = skyMaterial;
+      const skyMaterial = new window.BABYLON.GradientMaterial("skybox/horizon", scene as any);
+      skyMaterial.offset = 0;
+      skyMaterial.scale = -0.01;
+      skyMaterial.topColor.set(0.7, 0.69, 0.73);
+      skyMaterial.bottomColor.set(0.7, 0.69, 0.73);
+                skyMaterial.backFaceCulling = false;
+                skyMaterial.disableLighting = true;
+                skyMaterial.blockDirtyMechanism = true;
+                (skybox as any).material = skyMaterial;
 
-      // createLightRing(scene, camera);
+     
 
+      const createLightRing = function(scene, camera) {
+        const ringTransformNode = new BABYLON.TransformNode("ring", scene);
+        ringTransformNode.setParent(camera);
+        ringTransformNode.position.z = -5;
+  
+        const redLight = new BABYLON.PointLight(
+          "redLight",
+          new BABYLON.Vector3(0, 10, 0),
+          scene
+        );
+        redLight.diffuse.set(0.1, 0.1, 0.01);
+        redLight.specular.set(1, 0.7647058823529411, 0.5411764705882353);
+        redLight.parent = ringTransformNode;
+  
+        const greenLight = new BABYLON.PointLight(
+          "greenLight",
+          new BABYLON.Vector3(1, -5, 0),
+          scene
+        );
+        greenLight.diffuse.set(0.2784313725490196, 0.6352941176470588, 1);
+        greenLight.specular.set(0, 0, 0);
+        greenLight.intensity = 0.2;
+        greenLight.parent = ringTransformNode;
+  
+        const blueLight = new BABYLON.PointLight(
+          "blueLight",
+          new BABYLON.Vector3(-8.66, -1, 2),
+          scene
+        );
+        blueLight.diffuse.set(1, 0.7058823529411765, 0.4235294117647059);
+        blueLight.specular.set(0, 0, 0);
+        blueLight.intensity = 0.2;
+        blueLight.parent = ringTransformNode;
+  
+        const rotationAnimation = new BABYLON.Animation(
+          "lightRing",
+          "rotation.z",
+          30,
+          BABYLON.Animation.ANIMATIONTYPE_FLOAT,
+          BABYLON.Animation.ANIMATIONLOOPMODE_CYCLE
+        );
+        const rotationKeys = [
+          { frame: 0, value: 0 },
+          { frame: 300, value: 2 * Math.PI },
+        ];
+        rotationAnimation.setKeys(rotationKeys);
+        ringTransformNode.animations = [rotationAnimation];
+        scene.beginAnimation(ringTransformNode, 0, 300, true);
+      }
+      createLightRing(scene, camera)
       // 设置高亮层
       const highlightLayer = new BABYLON.HighlightLayer("selected", scene, {
         isStroke: true,
@@ -612,7 +658,6 @@ console.log(getModelInfoData);
           skeleton.current = skeletonRoot;
         
           // setskeleton(skeletonRoot)
-            console.log(skeleton.current,'=====');
             if(skeleton.current){
               onLoadCostume()
 
@@ -673,7 +718,6 @@ console.log(getModelInfoData);
           });
         }
       );
-      console.log('end');
       
       return scene;
     };
@@ -682,57 +726,8 @@ console.log(getModelInfoData);
     // 坐标向量
   
 
-   const createLightRing = function(scene, camera) {
-      const ringTransformNode = new BABYLON.TransformNode("ring", scene);
-      ringTransformNode.setParent(camera);
-      ringTransformNode.position.z = -5;
 
-      const redLight = new BABYLON.PointLight(
-        "redLight",
-        new BABYLON.Vector3(0, 10, 0),
-        scene
-      );
-      redLight.diffuse.set(0.1, 0.1, 0.01);
-      redLight.specular.set(1, 0.7647058823529411, 0.5411764705882353);
-      redLight.parent = ringTransformNode;
-
-      const greenLight = new BABYLON.PointLight(
-        "greenLight",
-        new BABYLON.Vector3(1, -5, 0),
-        scene
-      );
-      greenLight.diffuse.set(0.2784313725490196, 0.6352941176470588, 1);
-      greenLight.specular.set(0, 0, 0);
-      greenLight.intensity = 0.2;
-      greenLight.parent = ringTransformNode;
-
-      const blueLight = new BABYLON.PointLight(
-        "blueLight",
-        new BABYLON.Vector3(-8.66, -1, 2),
-        scene
-      );
-      blueLight.diffuse.set(1, 0.7058823529411765, 0.4235294117647059);
-      blueLight.specular.set(0, 0, 0);
-      blueLight.intensity = 0.2;
-      blueLight.parent = ringTransformNode;
-
-      const rotationAnimation = new BABYLON.Animation(
-        "lightRing",
-        "rotation.z",
-        30,
-        BABYLON.Animation.ANIMATIONTYPE_FLOAT,
-        BABYLON.Animation.ANIMATIONLOOPMODE_CYCLE
-      );
-      const rotationKeys = [
-        { frame: 0, value: 0 },
-        { frame: 300, value: 2 * Math.PI },
-      ];
-      rotationAnimation.setKeys(rotationKeys);
-      ringTransformNode.animations = [rotationAnimation];
-      scene.beginAnimation(ringTransformNode, 0, 300, true);
-    }
     const getRootParent = function(mesh) {
-      console.log(mesh,);
       
       if (mesh.name != "utils/wearable_dcl") {
         return getRootParent(mesh.parent);
@@ -769,7 +764,6 @@ console.log(getModelInfoData);
     }
 
     const get_avatar = function (meshName) {
-      console.log(scene);
       
       if (!scene) return null;
       return scene.getMeshByName(meshName);
@@ -917,7 +911,6 @@ console.log(getModelInfoData);
       // let found = false;
       // if (the_avatar) {
       // console.log(the_wearable);
-      console.log(modelList, 6666666666);
 
       let the_wearable = getDroppedWearable();
     //   console.log(the_wearable);
@@ -997,7 +990,6 @@ console.log(getModelInfoData);
         console.error(`Bad bone name "${e}"`);
         return null;
       }
-      console.log(skeleton.current.bones[t]);
       
       return skeleton.current.bones[t];
     }
@@ -1562,7 +1554,6 @@ const setWearablePostion = function (category, wearableMesh, oldPostion) {
         });
 
         const wearables = collectibles.map((wearable) => {
-          console.log(collectibles);
           
           const onDragStart = (event) => {
             const dataTransfer = event.dataTransfer;
@@ -2216,7 +2207,7 @@ modelList[modelMesh.hashValue] =false
         </div>
         <div style={{ position: "absolute", right: "10px", top: "10px" }}>
           <div className="editor-field position">
-            <label>Position</label>
+          <label className={style.lable}>Position</label>
             <div className="fields">
               <input
                 id="position[x]"
@@ -2229,6 +2220,7 @@ modelList[modelMesh.hashValue] =false
                     const inputElement = event.target as HTMLInputElement;
                   updatePosition("position", 0, inputElement.value);
                 }}
+                className={style.inputElement}
                 onChange={onChangeEdiumX}
               />
               <input
@@ -2239,6 +2231,7 @@ modelList[modelMesh.hashValue] =false
                 // value={editNumPoY}
                 value={editNumPo.y}
                 onChange={onChangeEdiumY}
+                className={style.inputElement}
                 onInput={(event) => {
                     const inputElement = event.target as HTMLInputElement;
                   updatePosition("position", 1, inputElement.value);
@@ -2250,6 +2243,7 @@ modelList[modelMesh.hashValue] =false
                 step="1"
                 title="z"
                 value={editNumPo.z}
+                   className={style.inputElement}
                 onInput={(event) => {
                     const inputElement = event.target as HTMLInputElement;
                   updatePosition("position", 2, inputElement.value);
@@ -2259,13 +2253,14 @@ modelList[modelMesh.hashValue] =false
             </div>
           </div>
           <div className="editor-field rotation">
-            <label>Rotation</label>
+          <label className={style.lable}>Rotation</label>
             <div className="fields">
               <input
                 id="rotation[x]"
                 type="number"
                 step="1"
                 title="x"
+                   className={style.inputElement}
                 value={editNumRoX.x}
                 onInput={(event) => {
                     const inputElement = event.target as HTMLInputElement;
@@ -2277,6 +2272,7 @@ modelList[modelMesh.hashValue] =false
                 id="rotation[y]"
                 type="number"
                 step="1"
+                className={style.inputElement}
                 title="y"
                 value={editNumRoX.y}
                 onInput={(event) => {
@@ -2289,6 +2285,7 @@ modelList[modelMesh.hashValue] =false
                 id="rotation[z]"
                 type="number"
                 step="1"
+                   className={style.inputElement}
                 title="z"
                 value={editNumRoX.z}
                 onInput={(event) => {
@@ -2300,11 +2297,12 @@ modelList[modelMesh.hashValue] =false
             </div>
           </div>
           <div className="editor-field scale-all">
-            <label>Scale</label>
+          <label className={style.lable}>Scale</label>
             <div className="fields">
               <input
                 id="scale[x]"
                 type="number"
+                className={style.inputElement}
                 step="1"
                 title="all"
                 value={editNumSaX.x}
@@ -2318,6 +2316,7 @@ modelList[modelMesh.hashValue] =false
               <input
                 id="scale[y]"
                 type="number"
+                   className={style.inputElement}
                 step="1"
                 title="all"
                 value={editNumSaX.y}
@@ -2331,6 +2330,7 @@ modelList[modelMesh.hashValue] =false
                 id="scale[z]"
                 type="number"
                 step="1"
+                   className={style.inputElement}
                 title="all"
                 value={editNumSaX.z}
                 onInput={(event) => {
@@ -2353,7 +2353,7 @@ modelList[modelMesh.hashValue] =false
               Upload
             </button> */}
           </div>
-          <div id="wearable_list"></div>
+          <div id="wearable_list" style={{color:"#fff"}}></div>
         </div>
       </div>
     </>
