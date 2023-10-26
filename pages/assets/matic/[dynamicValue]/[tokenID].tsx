@@ -687,7 +687,7 @@ export default function Matic() {
                     </div>
                   ) : (
                     <div
-                      className={style.btnAccount}
+                      className={style.btnAccount1}
                       //  onClick={wallet}
                     >
                       Deployed

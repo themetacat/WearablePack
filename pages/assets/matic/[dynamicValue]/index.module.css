@@ -72,6 +72,18 @@
     margin-left: 20px;
     text-align: center;
     cursor: pointer;
+    line-height: 30px;
+    border-radius:5px;
+  }
+  .btnAccount1{
+    width: 100px;
+    color: #4d4d50;
+    height: 30px;
+    line-height: 30px;
+    background-color: #fff;
+    margin-left: 20px;
+    text-align: center;
+    cursor: pointer;
     border-radius:5px;
   }
   .worldCon{

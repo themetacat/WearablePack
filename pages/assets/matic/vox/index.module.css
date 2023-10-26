@@ -39,11 +39,12 @@ color: #fff !important;
     padding: 0 12px;
     margin-bottom: 8px;
 }
+
 .lable{
     color: #fff;
 }
 .buton{
-    width: 150px;
+    width: 100px;
     color: #4d4d50;
     height: 30px;
     background-color: #fff;

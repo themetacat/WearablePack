@@ -1942,6 +1942,7 @@ const matches = regex.exec(attributesData[0]);
             <div className="fields" style={{display:"flex"}}>
               <input
                 id="position[x]"
+                style={{marginLeft:"0px"}}
                 type="number"
                 step="0.01"
                 title="x"
@@ -1995,6 +1996,7 @@ const matches = regex.exec(attributesData[0]);
           <label className={style.lable}>Rotation</label>
             <div className="fields">
               <input
+                style={{marginLeft:"0px"}}
                 id="rotation[x]"
                 type="number"
                 step="2"
@@ -2043,6 +2045,7 @@ const matches = regex.exec(attributesData[0]);
                 type="number"
                 className={style.inputElement} 
                 step="0.01"
+                style={{marginLeft:"0px"}}
                 title="all"
                 value={editNumSaX.x}
                 onInput={(event) => {

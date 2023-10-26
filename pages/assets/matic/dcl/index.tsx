@@ -190,6 +190,7 @@ export default function DclContent() {
   //   return getRandom(arr);
   // }
   let modelMesh = null;
+  let allmodelMesh = React.useRef(null);
   let targetBone = null;
   // let attachmentId = null;
   let last_rotation ={};
@@ -224,17 +225,17 @@ export default function DclContent() {
     return t;
     // return t.toString() === value.toString() ? t : null
   }
-  useEffect(() => {
+//   useEffect(() => {
   
     
-//     if(router.query.tokenID){
-//       console.log(55555555555555);
+// //     if(router.query.tokenID){
+// //       console.log(55555555555555);
       
-//       routerData.current = router.query.tokenID
-// console.log(routerData.current,);
+// //       routerData.current = router.query.tokenID
+// // console.log(routerData.current,);
 
-//     }
-  }, [voxMeshState,modelMesh,router,]);
+// //     }
+//   }, [voxMeshState,modelMesh,router,]);
 
   function updatePosition(type, index, value) {
     modelMesh = voxMeshState;
@@ -330,13 +331,15 @@ export default function DclContent() {
     last_rotation[0] = modelMesh.rotation.x;
     last_rotation[1] = modelMesh.rotation.y;
     last_rotation[2] = modelMesh.rotation.z;
+    console.log(modelMesh,55555);
     
     updateAttachment();
   
   }
 
- const updateAttachment = useCallback ( () =>{
-  
+ const updateAttachment = () =>{
+  console.log(modelMesh,88888, allmodelMesh.current);
+  modelMesh=allmodelMesh.current
 // // costume.attachments=costumeData
 // setCostume((state)=>{
 //   return {...state,token_id:router.query.tokenID}
@@ -376,7 +379,9 @@ export default function DclContent() {
           return true;
         }
       });
-  },[router.query.tokenID])
+      console.log(voxMeshState);
+      
+  }
 
 
   React.useEffect(() => {
@@ -403,6 +408,7 @@ export default function DclContent() {
       // const response = await fetch('./load1.json');
       // const data = await response.json();
   
+      console.log(modelList,656666);
       
 if(router){
 
@@ -416,7 +422,7 @@ if(router){
         } else {
           const data = getModelInfoItem.data;
           const attachments = data.attachments;
-
+          console.log(attachments,'mmmmmmmm')
           for (let att of attachments) {
             if(!att.type||att.type!='dcl'){continue}
            
@@ -427,7 +433,23 @@ if(router){
             all_last_rotation.current[attachmentId.current] = att.rotation;
 
             costume.attachments.push(att);
-           await  renderModel();
+            console.log(modelList,444447);
+             //   if (modelList[att.hashValue]) {
+            //     return; // 退出内部函数，不会影响外部循环
+            //   }
+            // await renderModel();
+            const executeRenderModel = async () => {
+            
+              console.log(modelList,987);
+              
+              if (modelList[att.hashValue]) {
+                return; // 退出内部函数，不会影响外部循环
+              }
+
+              // 执行 renderModel 的其他逻辑
+              await renderModel();
+            };
+            executeRenderModel()
             
           }
            
@@ -997,25 +1019,16 @@ if(router){
       // costume.attachments.forEach(
       // let found = false;
       // if (the_avatar) {
-      // console.log(the_wearable);
       await new Promise((resolve) => {
         let the_wearable = getDroppedWearable();
-        
-        // modelList[modelMesh.hashValue]
-        // modelList.some((item) => {
-        //   // console.log(item);
-        //   // console.log(the_wearable.token_id);
+      console.log(the_wearable);
 
-        //   if (the_wearable.token_id === item) {
-        //     resolve(null);
-        //     found = true;
-        //     return;
-        //   }
-        // });
-        if (modelList[the_wearable.hashValue]) {
+        console.log(modelList)
+        if (!modelList[the_wearable.hashValue]) {
           
-          return;
-        }
+     console.log('------------=======',);
+     
+        
 
         const the_bone = bone(targetBone);
 
@@ -1032,11 +1045,13 @@ if(router){
             "wearable",
             scene
           );
+        
           shaderMaterial.emissiveColor.set(0.3, 0.3, 0.3);
           shaderMaterial.diffuseColor.set(1, 1, 1);
           shaderMaterial.blockDirtyMechanism = true;
           // .token_id===the_wearable.token_id
           modelMesh = new BABYLON.Mesh("utils/wearable_dcl", scene);
+          allmodelMesh.current = modelMesh
           modelMesh.material = shaderMaterial;
           modelMesh.isPickable = true;
           modelMesh.checkCollisions = false;
@@ -1076,6 +1091,18 @@ if(router){
               } else {
                 updateAllPositionValue(null);
               }
+              // const executeRenderModel = async () => {
+            
+                
+              //   if (modelList[the_wearable.hashValue]) {
+              //     return; // 退出内部函数，不会影响外部循环
+              //   }
+  
+              //   // 执行 renderModel 的其他逻辑
+              //     focus();
+              // };
+              // executeRenderModel()
+              
               focus();
               modelList[the_wearable.hashValue]=true;
               resolve(null);
@@ -1084,6 +1111,7 @@ if(router){
             null,
             ".glb"
           );
+        }
         }
       });
       setVoxMeshState(modelMesh);
@@ -1233,206 +1261,6 @@ const setWearablePostion = function (category, wearableMesh, oldPostion) {
     // 生成wearables列表
    const renderWearables = function () {
       const collectibles = [];
-
-      // {
-      //          "id": "2222",
-      //          "token_id": id.tokenId,
-      //          "name": metadata.name,
-      //          "description":description,
-      //          "collection_id": 353,
-      //          "category": "mask",
-      //          "author": "0x38bbd375d49d6237984cbfa19719c419af9fe514",
-      //          "hash": "28614b00f9f807b8d71421d62d1612cab7501d20",
-      //          "suppressed": false,
-      //          "chain_id": 137,
-      //          "collection_address": "0x1e3D804415dCbb7ceA3478f176e123562e09b514",
-      //          "collection_name": "MetaCat"
-      //      }
-      //  const collectibles = [
-      //      {
-      //          "id": "4f8a99d2-89c2-4c18-ab87-b35d064021a4",
-      //          "token_id": 'bafybeid7vvyfrlgrqfzao5awnpijlpagoirvsgfbwmhm7q2gylrnuczedu',
-      //          "name": "1",
-      //          "description": "",
-      //          "collection_id": 353,
-      //          "category": "upper_body",
-      //          "author": "0x38bbd375d49d6237984cbfa19719c419af9fe514",
-      //          "hash": "28614b00f9f807b8d71421d62d1612cab7501d20",
-      //          "suppressed": false,
-      //          "chain_id": 137,
-      //          "collection_address": "0x1e3D804415dCbb7ceA3478f176e123562e09b514",
-      //          "collection_name": "MetaCat"
-      //      }, {
-      //          "id": "2222",
-      //          "token_id": id.tokenId,
-      //          "name": metadata.name,
-      //          "description":description,
-      //          "collection_id": 353,
-      //          "category": "mask",
-      //          "author": "0x38bbd375d49d6237984cbfa19719c419af9fe514",
-      //          "hash": "28614b00f9f807b8d71421d62d1612cab7501d20",
-      //          "suppressed": false,
-      //          "chain_id": 137,
-      //          "collection_address": "0x1e3D804415dCbb7ceA3478f176e123562e09b514",
-      //          "collection_name": "MetaCat"
-      //      }, {
-      //          "id": "333",
-      //          "token_id": 4,
-      //          "name": "all",
-      //          "description": "",
-      //          "collection_id": 353,
-      //          "category": "upper_body",
-      //          "author": "0x38bbd375d49d6237984cbfa19719c419af9fe514",
-      //          "hash": "28614b00f9f807b8d71421d62d1612cab7501d20",
-      //          "suppressed": false,
-      //          "chain_id": 137,
-      //          "collection_address": "0x1e3D804415dCbb7ceA3478f176e123562e09b514",
-      //          "collection_name": "MetaCat"
-      //      }, {
-      //          "id": "4444",
-      //          "token_id": 4,
-      //          "name": "eyewear",
-      //          "description": "",
-      //          "collection_id": 353,
-      //          "category": "eyewear",
-      //          "author": "0x38bbd375d49d6237984cbfa19719c419af9fe514",
-      //          "hash": "28614b00f9f807b8d71421d62d1612cab7501d20",
-      //          "suppressed": false,
-      //          "chain_id": 137,
-      //          "collection_address": "0x1e3D804415dCbb7ceA3478f176e123562e09b514",
-      //          "collection_name": "MetaCat"
-      //      }, {
-      //          "id": "4444",
-      //          "token_id": 5,
-      //          "name": "earring",
-      //          "description": "",
-      //          "collection_id": 353,
-      //          "category": "earring",
-      //          "author": "0x38bbd375d49d6237984cbfa19719c419af9fe514",
-      //          "hash": "28614b00f9f807b8d71421d62d1612cab7501d20",
-      //          "suppressed": false,
-      //          "chain_id": 137,
-      //          "collection_address": "0x1e3D804415dCbb7ceA3478f176e123562e09b514",
-      //          "collection_name": "MetaCat"
-      //      }, {
-      //          "id": "4444",
-      //          "token_id": 5,
-      //          "name": "famale",
-      //          "description": "",
-      //          "collection_id": 353,
-      //          "category": "lower_body",
-      //          "author": "0x38bbd375d49d6237984cbfa19719c419af9fe514",
-      //          "hash": "28614b00f9f807b8d71421d62d1612cab7501d20",
-      //          "suppressed": false,
-      //          "chain_id": 137,
-      //          "collection_address": "0x1e3D804415dCbb7ceA3478f176e123562e09b514",
-      //          "collection_name": "MetaCat"
-      //      }, {
-      //          "id": "4444",
-      //          "token_id": 5,
-      //          "name": "hand",
-      //          "description": "",
-      //          "collection_id": 353,
-      //          "category": "hands_wear",
-      //          "author": "0x38bbd375d49d6237984cbfa19719c419af9fe514",
-      //          "hash": "28614b00f9f807b8d71421d62d1612cab7501d20",
-      //          "suppressed": false,
-      //          "chain_id": 137,
-      //          "collection_address": "0x1e3D804415dCbb7ceA3478f176e123562e09b514",
-      //          "collection_name": "MetaCat"
-      //      }, {
-      //          "id": "4444",
-      //          "token_id": 5,
-      //          "name": "facial1",
-      //          "description": "",
-      //          "collection_id": 353,
-      //          "category": "facial_hair",
-      //          "author": "0x38bbd375d49d6237984cbfa19719c419af9fe514",
-      //          "hash": "28614b00f9f807b8d71421d62d1612cab7501d20",
-      //          "suppressed": false,
-      //          "chain_id": 137,
-      //          "collection_address": "0x1e3D804415dCbb7ceA3478f176e123562e09b514",
-      //          "collection_name": "MetaCat"
-      //      }, {
-      //          "id": "4444",
-      //          "token_id": 5,
-      //          "name": "long_hair",
-      //          "description": "",
-      //          "collection_id": 353,
-      //          "category": "hair",
-      //          "author": "0x38bbd375d49d6237984cbfa19719c419af9fe514",
-      //          "hash": "28614b00f9f807b8d71421d62d1612cab7501d20",
-      //          "suppressed": false,
-      //          "chain_id": 137,
-      //          "collection_address": "0x1e3D804415dCbb7ceA3478f176e123562e09b514",
-      //          "collection_name": "MetaCat"
-      //      }, {
-      //          "id": "4444",
-      //          "token_id": 5,
-      //          "name": "feet",
-      //          "description": "",
-      //          "collection_id": 353,
-      //          "category": "feet",
-      //          "author": "0x38bbd375d49d6237984cbfa19719c419af9fe514",
-      //          "hash": "28614b00f9f807b8d71421d62d1612cab7501d20",
-      //          "suppressed": false,
-      //          "chain_id": 137,
-      //          "collection_address": "0x1e3D804415dCbb7ceA3478f176e123562e09b514",
-      //          "collection_name": "MetaCat"
-      //      }, {
-      //          "id": "4444",
-      //          "token_id": 5,
-      //          "name": "hat",
-      //          "description": "",
-      //          "collection_id": 353,
-      //          "category": "hat",
-      //          "author": "0x38bbd375d49d6237984cbfa19719c419af9fe514",
-      //          "hash": "28614b00f9f807b8d71421d62d1612cab7501d20",
-      //          "suppressed": false,
-      //          "chain_id": 137,
-      //          "collection_address": "0x1e3D804415dCbb7ceA3478f176e123562e09b514",
-      //          "collection_name": "MetaCat"
-      //      }, {
-      //          "id": "4444",
-      //          "token_id": 5,
-      //          "name": "helmet",
-      //          "description": "",
-      //          "collection_id": 353,
-      //          "category": "helmet",
-      //          "author": "0x38bbd375d49d6237984cbfa19719c419af9fe514",
-      //          "hash": "28614b00f9f807b8d71421d62d1612cab7501d20",
-      //          "suppressed": false,
-      //          "chain_id": 137,
-      //          "collection_address": "0x1e3D804415dCbb7ceA3478f176e123562e09b514",
-      //          "collection_name": "MetaCat"
-      //      }, {
-      //          "id": "4444",
-      //          "token_id": 5,
-      //          "name": "tiara",
-      //          "description": "",
-      //          "collection_id": 353,
-      //          "category": "tiara",
-      //          "author": "0x38bbd375d49d6237984cbfa19719c419af9fe514",
-      //          "hash": "28614b00f9f807b8d71421d62d1612cab7501d20",
-      //          "suppressed": false,
-      //          "chain_id": 137,
-      //          "collection_address": "0x1e3D804415dCbb7ceA3478f176e123562e09b514",
-      //          "collection_name": "MetaCat"
-      //      }, {
-      //          "id": "4444",
-      //          "token_id": 5,
-      //          "name": "top_head",
-      //          "description": "",
-      //          "collection_id": 353,
-      //          "category": "top_head",
-      //          "author": "0x38bbd375d49d6237984cbfa19719c419af9fe514",
-      //          "hash": "28614b00f9f807b8d71421d62d1612cab7501d20",
-      //          "suppressed": false,
-      //          "chain_id": 137,
-      //          "collection_address": "0x1e3D804415dCbb7ceA3478f176e123562e09b514",
-      //          "collection_name": "MetaCat"
-      //      }
-      //  ]
 
       // const tokenboundAccount =
       //   window.localStorage.getItem("tokenboundAccount");
@@ -1659,6 +1487,7 @@ const setWearablePostion = function (category, wearableMesh, oldPostion) {
         lay.removeAllMeshes();
         // 获取根元素的所有子网格
         var childMeshes = modelMesh.getChildMeshes();
+console.log(childMeshes,'=====');
 
         // 遍历子网格数组
         for (var i = 0; i < childMeshes.length; i++) {
@@ -1811,6 +1640,7 @@ modelList[modelMesh.hashValue] =false
         scale_x.value = (100).toString();
         scale_y.value = (100).toString();
         scale_z.value = (100).toString();
+       
         updateAttachment();
   
           
@@ -1933,63 +1763,7 @@ modelList[modelMesh.hashValue] =false
               last_rotation = {}
           }
 
-        // if (last_rotation.length === 0) {
-        //   rotation_x.value = modelMesh.rotation.x.toFixed(2);
-        //   rotation_y.value = modelMesh.rotation.y.toFixed(2);
-        //   rotation_z.value = modelMesh.rotation.z.toFixed(2);
-        // } else {
-        //   rotation_x.value = modelMesh.rotation.x = parseFloat(
-        //     last_rotation[0]
-        //   ).toFixed(2);
-        //   rotation_y.value = modelMesh.rotation.y = parseFloat(
-        //     last_rotation[1]
-        //   ).toFixed(2);
-        //   rotation_z.value = modelMesh.rotation.z = parseFloat(
-        //     last_rotation[2]
-        //   ).toFixed(2);
-        //   if (!gizmoManager.boundingBoxGizmoEnabled) {
-        //     last_rotation = [];
-        //   }
-        // }
-//         console.log(modelMesh.rotation);
-// console.log( modelMesh.scaling);
-//         setEditNumPo((prevEditNumPo) => ({
-//           ...prevEditNumPo,
-//           x: modelMesh.position.x.toFixed(2),
-//         }));
-//         setEditNumPo((prevEditNumPo) => ({
-//           ...prevEditNumPo,
-//           y: modelMesh.position.y.toFixed(2),
-//         }));
-//         setEditNumPo((prevEditNumPo) => ({
-//           ...prevEditNumPo,
-//           z: modelMesh.position.z.toFixed(2),
-//         }));
-//         setEditNumRoX((prevEditNumPo) => ({
-//           ...prevEditNumPo,
-        
-//           x: modelMesh.rotation.x,
-//          }));
-//        setEditNumRoX((prevEditNumPo) => ({
-//           ...prevEditNumPo,
-//           y:  modelMesh.rotation.y,
-//          }));
-//        setEditNumRoX((prevEditNumPo) => ({
-//           ...prevEditNumPo,
-//           z: modelMesh.rotation.z,
-//          }));
-//        setEditNumSaX((prevEditNumPo) => ({
-//           ...prevEditNumPo,
-//           x: modelMesh.scaling.x.toFixed(2),
-//          }));
-//        setEditNumSaX((prevEditNumPo) => ({
-//           ...prevEditNumPo,
-//           y: modelMesh.scaling.y.toFixed(2),
-//          }));
-//        setEditNumSaX((prevEditNumPo) => ({
-//           ...prevEditNumPo,
-//           z: modelMesh.scaling.z.toFixed(2),
-//          }));
+ 
 
         if (!type) {
           updateAttachment();
@@ -2117,7 +1891,7 @@ modelList[modelMesh.hashValue] =false
 
    
   }
-  }, [router,skeleton,]);
+  }, [router,skeleton]);
 
 
   

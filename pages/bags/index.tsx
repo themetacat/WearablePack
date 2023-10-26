@@ -176,7 +176,7 @@ export default function Bags() {
         }
       } else if (chainIdNum === 137) {
         if (address) {
-          window.open(`https://opensea.io/assets/mumbai/${address}/${tokenID}`);
+          window.open(`https://opensea.io/assets/matic/${address}/${tokenID}`);
         } else {
           alert("Contract address error");
         }
