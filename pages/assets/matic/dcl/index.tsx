@@ -191,7 +191,8 @@ export default function DclContent() {
   // }
   let modelMesh = null;
   let allmodelMesh = React.useRef(null);
-  let targetBone = null;
+  // let targetBone = null;
+  let targetBone: any = React.useRef(null);
   // let attachmentId = null;
   let last_rotation ={};
   // let all_last_rotation = {};
@@ -331,19 +332,19 @@ export default function DclContent() {
     last_rotation[0] = modelMesh.rotation.x;
     last_rotation[1] = modelMesh.rotation.y;
     last_rotation[2] = modelMesh.rotation.z;
-    console.log(modelMesh,55555);
     
     updateAttachment();
   
   }
 
- const updateAttachment = () =>{
-  console.log(modelMesh,88888, allmodelMesh.current);
-  modelMesh=allmodelMesh.current
+ const updateAttachment = useCallback(() =>{
+  // modelMesh=allmodelMesh.current
 // // costume.attachments=costumeData
 // setCostume((state)=>{
 //   return {...state,token_id:router.query.tokenID}
 // })
+// console.log(modelMesh,88888, allmodelMesh.current);
+
     if (!modelMesh) {
       console.log("no modelMesh");
       return;
@@ -379,9 +380,9 @@ export default function DclContent() {
           return true;
         }
       });
-      console.log(voxMeshState);
+    
       
-  }
+  },[modelMesh])
 
 
   React.useEffect(() => {
@@ -401,14 +402,17 @@ export default function DclContent() {
         if (gizmoManager) {
           gizmoManager.attachToMesh(null);
         }
+       
+        // console.log(modelMesh,'23tttttt');
         update_modelMesh(null);
+        // console.log(modelMesh,'ttttt');
       }
     };
     const onLoadCostume = async function () {
       // const response = await fetch('./load1.json');
       // const data = await response.json();
   
-      console.log(modelList,656666);
+    
       
 if(router){
 
@@ -422,39 +426,40 @@ if(router){
         } else {
           const data = getModelInfoItem.data;
           const attachments = data.attachments;
-          console.log(attachments,'mmmmmmmm')
+          const processedHashes = {}; // 用于跟踪已经处理过的 hash 值
+          // console.log(attachments,'mmmmmmmm')
           for (let att of attachments) {
             if(!att.type||att.type!='dcl'){continue}
            
+          
+            if (processedHashes[att.hashValue]) {
+              continue; // 如果已经处理过相同的 hash 值，跳过当前循环
+            }
+            processedHashes[att.hashValue] = true; // 记录已处理的 hash 值
+          
             // (window as any).droppedWearable = att;
             windowVal['droppedWearable']= att
-            targetBone = att.bone;
+            targetBone.current = att.bone;
             attachmentId.current = att.uuid;
             all_last_rotation.current[attachmentId.current] = att.rotation;
 
             costume.attachments.push(att);
-            console.log(modelList,444447);
              //   if (modelList[att.hashValue]) {
             //     return; // 退出内部函数，不会影响外部循环
             //   }
-            // await renderModel();
-            const executeRenderModel = async () => {
-            
-              console.log(modelList,987);
-              
-              if (modelList[att.hashValue]) {
-                return; // 退出内部函数，不会影响外部循环
-              }
 
-              // 执行 renderModel 的其他逻辑
-              await renderModel();
-            };
-            executeRenderModel()
+              // console.log(modelList[att.hashValue],55555)
+ // 判断是否需要执行 renderModel
+ const executeRenderModel = Object.keys(processedHashes).length === Object.values(processedHashes).filter(Boolean).length;
+ if (executeRenderModel) {
+  await renderModel();
+}
             
           }
            
             
-          onClick(null);
+         onClick(null);
+// console.log(modelMesh,59898);
 
           // 在这里使用从JSON文件中读取到的数据
         }
@@ -484,6 +489,8 @@ if(router){
                 break;
               case BABYLON.PointerEventTypes.POINTERUP:
                 if (isDragging || eventData.event.button !== 0) return;
+                
+                
                 onClick(
                   eventData.pickInfo?.hit && eventData.pickInfo.pickedMesh
                 );
@@ -495,6 +502,7 @@ if(router){
                   let new_modelMesh = getRootParent(
                     eventData.pickInfo.pickedMesh
                   );
+                  // console.log(new_modelMesh,66666)
                   if (new_modelMesh != modelMesh) {
                     update_modelMesh(new_modelMesh);
                     focus();
@@ -813,7 +821,7 @@ if(router){
     const onDrop = function () {
       hideBoneSpheres(); // 隐藏骨骼球体
       // 异步添加可穿戴物品到装饰中
-      if (!targetBone) {
+      if (!targetBone.current) {
         console.log("no Bone");
         return;
       }
@@ -830,7 +838,7 @@ if(router){
       //     return;
       // }
 
-      addAttachment(droppedWearable, targetBone)
+      addAttachment(droppedWearable, targetBone.current)
         // .then(() => {})
         // .catch((error) => {
         //   console.error("Error adding attachment:", error);
@@ -1021,16 +1029,16 @@ if(router){
       // if (the_avatar) {
       await new Promise((resolve) => {
         let the_wearable = getDroppedWearable();
-      console.log(the_wearable);
+      // console.log(the_wearable);
 
-        console.log(modelList)
+        // console.log(modelList)
         if (!modelList[the_wearable.hashValue]) {
           
-     console.log('------------=======',);
+    //  console.log('------------=======',);
      
         
 
-        const the_bone = bone(targetBone);
+        const the_bone = bone(targetBone.current);
 
         if (!the_bone) {
           console.log("no Bone");
@@ -1051,7 +1059,7 @@ if(router){
           shaderMaterial.blockDirtyMechanism = true;
           // .token_id===the_wearable.token_id
           modelMesh = new BABYLON.Mesh("utils/wearable_dcl", scene);
-          allmodelMesh.current = modelMesh
+          // allmodelMesh.current = modelMesh
           modelMesh.material = shaderMaterial;
           modelMesh.isPickable = true;
           modelMesh.checkCollisions = false;
@@ -1091,21 +1099,11 @@ if(router){
               } else {
                 updateAllPositionValue(null);
               }
-              // const executeRenderModel = async () => {
-            
-                
-              //   if (modelList[the_wearable.hashValue]) {
-              //     return; // 退出内部函数，不会影响外部循环
-              //   }
-  
-              //   // 执行 renderModel 的其他逻辑
-              //     focus();
-              // };
-              // executeRenderModel()
-              
-              focus();
+             
+                focus();
+             
               modelList[the_wearable.hashValue]=true;
-              resolve(null);
+                resolve(null);
             },
             null,
             null,
@@ -1173,14 +1171,14 @@ const setWearablePostion = function (category, wearableMesh, oldPostion) {
    const wearableOnClick = function () {
       // 获取被拖放的可穿戴物品
       const droppedWearable = getDroppedWearable();
-      targetBone = getWearableBone(droppedWearable.category);
+      targetBone.current = getWearableBone(droppedWearable.category);
 
       if (!droppedWearable) {
         console.warn("no wearable"); // 没有可穿戴物品，打印警告信息
         return;
       }
 
-      addAttachment(droppedWearable, targetBone)
+      addAttachment(droppedWearable, targetBone.current)
         // .then(() => {})
         // .catch((error) => {
         //   console.error("Error adding attachment:", error);
@@ -1245,9 +1243,9 @@ const setWearablePostion = function (category, wearableMesh, oldPostion) {
           //  emissiveMaterial.emissiveColor = new BABYLON.Color3(0.3, 0, 1);
           //  pickResult.pickedMesh.material = emissiveMaterial;
           // 设置目标骨骼为拾取到的物体的元数据
-          targetBone = pickResult.pickedMesh.metadata;
+          targetBone.current = pickResult.pickedMesh.metadata;
         } else {
-          targetBone = null;
+          targetBone.current = null;
         }
       }
 
@@ -1487,7 +1485,7 @@ const setWearablePostion = function (category, wearableMesh, oldPostion) {
         lay.removeAllMeshes();
         // 获取根元素的所有子网格
         var childMeshes = modelMesh.getChildMeshes();
-console.log(childMeshes,'=====');
+
 
         // 遍历子网格数组
         for (var i = 0; i < childMeshes.length; i++) {
@@ -1524,86 +1522,27 @@ modelList[modelMesh.hashValue] =false
 
  const update_modelMesh=   function (value) {
       modelMesh = value;
-      setVoxMeshState(value);
-      
+      // setVoxMeshState(value);
+      // console.log(value,'fffff');
+      // console.log(modelMesh,58821)
 
       if (modelMesh) {
+    
+        
         // attachmentId = modelMesh.uuid;
         attachmentId.current = modelMesh.uuid;
         last_rotation = all_last_rotation.current[attachmentId.current];
         // console.log( attachmentId.current,all_last_rotation.current[attachmentId.current]);
         
       } else {
+        // console.log(111111111111111111);
+        
         // attachmentId = null;
         attachmentId.current = null;
       }
 
       updateAllPositionValue("change_model_mesh");
     }
-
-    //    // pass
-    //    function updateInputPositionValue(type, dir) {
-    //     if (!modelMesh) {
-    //         return
-    //     }
-    //     if (type === 'position') {
-    //         switch (dir) {
-    //             case 0:
-    //                 const position_x = document.getElementById("position[x]");
-    //                 position_x.value = modelMesh.position.x.toFixed(2);
-    //                 break
-    //             case 1:
-    //                 const position_y = document.getElementById("position[y]");
-    //                 position_y.value = modelMesh.position.y.toFixed(2);
-    //                 break
-    //             case 2:
-    //                 const position_z = document.getElementById("position[z]");
-    //                 position_z.value = modelMesh.position.z.toFixed(2);
-    //                 break
-    //         }
-    //     } else if (type === 'rotation') {
-    //         switch (dir) {
-    //             case 0:
-    //                 const rotation_x = document.getElementById("rotation[x]");
-    //                 rotation_x.value = modelMesh.rotation.x.toFixed(2);
-    //                 break
-    //             case 1:
-    //                 const rotation_y = document.getElementById("rotation[y]");
-    //                 rotation_y.value = modelMesh.rotation.y.toFixed(2);
-    //                 break
-    //             case 2:
-    //                 const rotation_z = document.getElementById("rotation[z]");
-    //                 rotation_z.value = modelMesh.rotation.z.toFixed(2);
-    //                 break
-    //         }
-    //     } else if (type === 'scale') {
-    //         // switch (dir) {
-    //         //     case 0:
-    //         //         const scale_x = document.getElementById("scale[x]");
-    //         //         scale_x.value = modelMesh.scaling.x.toFixed(2);
-    //         //         break
-    //         //     case 1:
-    //         //         const scale_y = document.getElementById("scale[y]");
-    //         //         scale_y.value = modelMesh.scaling.y.toFixed(2);
-    //         //         break
-    //         //     case 2:
-    //         //         const scale_z = document.getElementById("scale[z]");
-    //         //         scale_z.value = modelMesh.scaling.z.toFixed(2);
-    //         //         break
-    //         // }
-    //         const scale_x = document.getElementById("scale[x]");
-    //         const scale_y = document.getElementById("scale[y]");
-    //         const scale_z = document.getElementById("scale[z]");
-    //         console.log(modelMesh.scaling.x.toFixed(2));
-    //         console.log(modelMesh.scaling.y.toFixed(2));
-    //         console.log(modelMesh.scaling.z.toFixed(2));
-    //         scale_x.value = modelMesh.scaling.x.toFixed(2);
-    //         scale_y.value = modelMesh.scaling.y.toFixed(2);
-    //         scale_z.value = modelMesh.scaling.z.toFixed(2);
-
-    //     }
-
-    // }
 
    const updateAllPositionValue = function (type) {
       const position_x = document.getElementById(
@@ -1628,6 +1567,8 @@ modelList[modelMesh.hashValue] =false
       const scale_x = document.getElementById("scale[x]") as HTMLInputElement;
       const scale_y = document.getElementById("scale[y]") as HTMLInputElement;
       const scale_z = document.getElementById("scale[z]") as HTMLInputElement;
+      // console.log(modelMesh,'ghhhhhh');
+      
       if (!modelMesh) {
         position_x.value = (0.0).toString();
         position_y.value = (0.0).toString();
@@ -1645,46 +1586,12 @@ modelList[modelMesh.hashValue] =false
   
           
       } else if (type === "change_model_mesh") {
+        // console.log(22222);
+        
         position_x.value = modelMesh.position.x.toFixed(2);
         position_y.value = modelMesh.position.y.toFixed(2);
         position_z.value = modelMesh.position.z.toFixed(2);
-        // setEditNumPo((prevEditNumPo) => ({
-        //   ...prevEditNumPo,
-        //   x: modelMesh.position.x.toFixed(2),
-        // }));
-        // setEditNumPo((prevEditNumPo) => ({
-        //   ...prevEditNumPo,
-        //   y: modelMesh.position.y.toFixed(2),
-        // }));
-        // setEditNumPo((prevEditNumPo) => ({
-        //   ...prevEditNumPo,
-        //   z: modelMesh.position.z.toFixed(2),
-        // }));
-        // setEditNumRoX((prevEditNumPo) => ({
-        //      ...prevEditNumPo,
-        //      x: modelMesh.rotation.x = last_rotation[0],
-        //     }));
-        //   setEditNumRoX((prevEditNumPo) => ({
-        //      ...prevEditNumPo,
-        //      y: modelMesh.rotation.y = last_rotation[0],
-        //     }));
-        //   setEditNumRoX((prevEditNumPo) => ({
-        //      ...prevEditNumPo,
-        //      z: modelMesh.rotation.z = last_rotation[0],
-        //     }));
-        //   setEditNumSaX((prevEditNumPo) => ({
-        //      ...prevEditNumPo,
-        //      x: modelMesh.scaling.x.toFixed(2),
-        //     }));
-        //   setEditNumSaX((prevEditNumPo) => ({
-        //      ...prevEditNumPo,
-        //      y: modelMesh.scaling.y.toFixed(2),
-        //     }));
-        //   setEditNumSaX((prevEditNumPo) => ({
-        //      ...prevEditNumPo,
-        //      z: modelMesh.scaling.z.toFixed(2),
-        //     }));
-          
+
         scale_x.value = modelMesh.scaling.x.toFixed(2);
         scale_y.value = modelMesh.scaling.y.toFixed(2);
         scale_z.value = modelMesh.scaling.z.toFixed(2);
