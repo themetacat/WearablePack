@@ -115,6 +115,7 @@
   height: 100vh;
   background-color: rgba(0,0,0,0.8);
   background-image:linear-gradient(45deg, #1d071e 0%, #000000 100%);
+
  }
  .page1{
   width: 100%;
@@ -346,6 +347,7 @@ margin-top: 26px;
   margin: auto;
   border-radius: 10px;
   text-align: center;
+  
   color: #fff;
   position: absolute;
   left: 50%;
@@ -374,6 +376,7 @@ font-size: 25px;
   top: 60px;
   right: 20px;
   z-index: 9999;
+  background-color: #000000;
  }
  .titCon{
   position: absolute;

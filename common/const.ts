@@ -7,8 +7,8 @@ export const NAVIGATION = [
 export const SITE_NAME_MULTILINE = ['WearablePack'];
 export const SITE_NAME = 'WearablePack';
 export const SITE_URL = 'https://metacat.work';
-export const META_DESCRIPTION = 'Pack Your Wearable ERC-6551';
-export const SITE_DESCRIPTION = 'Pack Your Wearable ERC-6551';
+export const META_DESCRIPTION = 'Pack Your Wearable with ERC-6551';
+export const SITE_DESCRIPTION = 'Pack Your Wearable with ERC-6551';
 export const INFURA_ID = '7b9fdfd5be844ea3b9f2988619123ced';
 
 export const ICON_DATA = [
