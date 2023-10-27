@@ -203,6 +203,7 @@ export default function HomePage({ onClickHandler }: Props,ref) {
                 },
                 (error: any) => {
                   setLoading(false);
+                  setShowMenu(false)
                 }
               );
           }
@@ -212,9 +213,9 @@ export default function HomePage({ onClickHandler }: Props,ref) {
       );
     const connectToChain = React.useCallback(async () => {
         setLoading(true);
-        setTimeout(() => {
-          setLoading(false);
-        }, 5000);
+        // setTimeout(() => {
+        //   setLoading(false);
+        // }, 5000);
         if (
           typeof (window as any).ethereum === "undefined" ||
           !(window as any).ethereum.isMetaMask
@@ -259,6 +260,7 @@ export default function HomePage({ onClickHandler }: Props,ref) {
       
             // 检查当前链Id是否为 Mumbai Testnet 的 137
             if (chainId === 137) {
+              setLoading(true);
               // console.log('Already connected to Mumbai Testnet');
               web3.connect().then(
                 async (res) => {

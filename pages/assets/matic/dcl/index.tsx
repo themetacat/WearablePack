@@ -1892,6 +1892,7 @@ modelList[modelMesh.hashValue] =false
             <div className="fields">
               <input
                 id="position[x]"
+                  style={{marginLeft:"0px"}}
                 type="number"
                 step="1"
                 title="x"
@@ -1938,6 +1939,7 @@ modelList[modelMesh.hashValue] =false
             <div className="fields">
               <input
                 id="rotation[x]"
+                  style={{marginLeft:"0px"}}
                 type="number"
                 step="1"
                 title="x"
@@ -1982,6 +1984,7 @@ modelList[modelMesh.hashValue] =false
             <div className="fields">
               <input
                 id="scale[x]"
+                  style={{marginLeft:"0px"}}
                 type="number"
                 className={style.inputElement}
                 step="1"
