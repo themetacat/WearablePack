@@ -1249,7 +1249,7 @@ web3.eth.getBalance(walletAddress)
       };
 
   return (
-    <Page meta={meta} className={cn("" ,(mintContent===true||showMenu === true)?style.page1:style.page)}>
+    <Page meta={meta} className={cn("" ,(mintContent===true||showMenu === true&&!profile.address)?style.page1:style.page)}>
     <>
     <div className={cn('',style.homeContent)}>
       <div className={cn('',style.homeC)}>
