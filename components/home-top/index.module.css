@@ -120,12 +120,11 @@
  .page1{
   width: 100%;
   height: 100vh;
-  /* background-color: rgba(0,0,0,0.8);
-  background-image:linear-gradient(45deg, #1d071e 0%, #000000 100%); */
- }
- .page1 {
   position: relative;
-}
+ }
+ /* .page1 {
+  position: relative;
+} */
 
 .page1::before {
   content: "";
@@ -251,12 +250,16 @@ margin-top: 26px;
    filter: brightness(150%);
    text-align: center;
    border: 20px;
-   position: absolute;
+   /* position: absolute;
    left: 37%;
-   top: 37%;
+   top: 37%; */
+   position: absolute;
+   top: 50%;
+   left: 50%;
+   transform: translate(-50%, -50%); /* 将内容居中 */
    color: #fff;
    margin-top: 20px;
-   z-index: 99999;
+   z-index: 999;
  }
  .content1{
   width: 300px;
@@ -267,12 +270,17 @@ margin-top: 26px;
    filter: brightness(150%);
    text-align: center;
    border: 20px;
-   position: absolute;
+   /* position: absolute;
    left: 37%;
-   top: 37%;
+   top: 37%; */
+   position: absolute;
+   top: 50%;
+   left: 50%;
+   margin-top: 80px;
+   transform: translate(-50%, -50%); /* 将内容居中 */
    color: #fff;
    margin-top: 20px;
-   z-index: 99999;
+   z-index: 999;
  }
  .middleContent{
    display: flex;
@@ -325,9 +333,14 @@ margin-top: 26px;
    line-height: 50px;
    border: 1px solid #4b4b51;
    border-radius: 15px;
-   position: absolute;
+   /* position: absolute;
    bottom: 10px;
-   left: 80px;
+   left: 80px; */
+   position: absolute;
+   top: 50%;
+   left: 50%;
+   transform: translate(-50%, 150%); /* 将内容居中 */
+
  }
  .mintBtnDis{
    width: 160px;
@@ -347,12 +360,17 @@ margin-top: 26px;
   margin: auto;
   border-radius: 10px;
   text-align: center;
-  
+  position: fixed;
+  inset: 0px;
+  align-items: center;
+  -webkit-box-pack: center;
+  justify-content: center;
   color: #fff;
-  position: absolute;
+  /* position: absolute;
   left: 50%;
   top: 50%;
-  transform: translate(-55%,90%);
+  transform: translate(-50%,70%); */
+  filter: brightness(120%);
   padding: 20px;
  }
  .conRendImg{
@@ -378,6 +396,7 @@ font-size: 25px;
   z-index: 9999;
   background-color: #000000;
  }
+ 
  .titCon{
   position: absolute;
   left: 20px;
@@ -398,8 +417,8 @@ font-size: 25px;
   margin:0 auto;
   top: 50%;
   left: 50%;
-  margin-top: 80px;
-  transform: translate(-55%,90%);
+  /* margin-top: 80px; */
+  transform: translate(-50%,-50%);
   text-align: center;
   width: 1200px;
  }
