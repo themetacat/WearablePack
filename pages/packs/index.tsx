@@ -251,7 +251,7 @@ export default function Bags() {
           </div>
         )}
       </div>
-      <div style={{ position: "fixed", bottom: "0px", width: "100%" }}>
+      <div style={{ width: "100%",marginTop:'70px' }}>
         <Footer />
       </div>
     </Page>
