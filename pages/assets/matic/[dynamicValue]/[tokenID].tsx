@@ -688,15 +688,15 @@ export default function Matic() {
                   ) : (
                     <div
                       className={style.btnAccount1}
-                      //  onClick={wallet}
+                       onClick={wallet}
                     >
                       Deployed
                     </div>
                   )}
 
-                  <div className={style.btnAccount} onClick={RefreshMetadata}>
+                  {/* <div className={style.btnAccount} onClick={RefreshMetadata}>
                     Refresh metadata
-                  </div>
+                  </div> */}
                   </div>
                 </div>
                <p className={style.totalNum}>{dataInfo.length} {wearableType==='voxels'||wearableType==='Decentraland'?'Wearables':'Assets'}</p>
