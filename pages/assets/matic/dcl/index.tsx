@@ -1101,7 +1101,7 @@ export default function DclContent() {
                   //  console.log(asee,4444);
                   asee.className = "aseeff";
                   //  asee.style.setProperty('className', 'asee', 'important');
-                  asee.style.opacity = "0.6";
+                  asee.style.opacity = "0.4";
 
                   resolve(null);
                 },

@@ -1020,7 +1020,7 @@ const metaCatAtk = window.localStorage.getItem("METACAT_atk");
         //  console.log(asee,4444);
          asee.className='aseeff';
         //  asee.style.setProperty('className', 'asee', 'important');
-        asee.style.opacity='0.6';
+        asee.style.opacity='0.4';
         // asee.style.pointerEvents='none';
       }
 
