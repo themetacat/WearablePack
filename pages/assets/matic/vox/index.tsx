@@ -871,7 +871,7 @@ const metaCatAtk = window.localStorage.getItem("METACAT_atk");
     //  if(found){
     //     return
     // }
-      const defaultScale = 0.5;
+      const defaultScale = 1;
       const updatedCostume = Object.assign({}, costume);
       // const uniqueId = generateUUID(null, null, null);
       const uniqueId = crypto.randomUUID();;
@@ -914,7 +914,6 @@ const metaCatAtk = window.localStorage.getItem("METACAT_atk");
       
       if (!skeleton) return null;
       const t = skeleton.getBoneIndexByName(`mixamorig:${e}`);
-      console.log(skeleton.bones[t]);
 
       if (t == -1) {
         console.error(`Bad bone name "${e}"`);
@@ -990,8 +989,9 @@ const metaCatAtk = window.localStorage.getItem("METACAT_atk");
       voxMesh.material = shaderMaterial;
       voxMesh.isPickable = true;
       voxMesh.checkCollisions = false;
+      voxMesh.hashValue = droppedWearable.voxHash
       voxMesh.gateway=droppedWearable.gateway
-      voxMesh.scaling.set(0.5, 0.5, 0.5);
+      voxMesh.scaling.set(1,1,1);
       const origin = new BABYLON.TransformNode("Node/wearable", scene);
 
       voxMesh.setParent(origin);
@@ -1016,10 +1016,16 @@ const metaCatAtk = window.localStorage.getItem("METACAT_atk");
           // 将模型绕 y 轴旋转 180 度，使其正上方朝向 y 轴
           // get vox data
          get_vox_data(requestConfig, voxMesh)
+         const asee = document.getElementById(droppedWearable.voxHash)
+        //  console.log(asee,4444);
+         asee.className='aseeff';
+        //  asee.style.setProperty('className', 'asee', 'important');
+        asee.style.opacity='0.6';
+        // asee.style.pointerEvents='none';
       }
 
       voxMesh.uuid = attachmentId.current
-setVoxMeshState(voxMesh)
+      setVoxMeshState(voxMesh)
   }
 
     // 获取 拖放的wearable
@@ -1266,6 +1272,7 @@ const matches = regex.exec(attributesData[0]);
         const li = document.createElement("li");
         li.className = "draggable-wearable";
         li.draggable = true;
+        li.id =wearable.voxHash
         li.title = tooltip;
         li.addEventListener("dragstart", onDragStart);
         li.addEventListener("dragend", onDragEnd);
@@ -1393,16 +1400,19 @@ const matches = regex.exec(attributesData[0]);
     }
 
     function dispose_mesh() {
+      
       if (voxMesh) {
         voxMesh.dispose(); // 销毁模型及其资源
         const droppedWearable=getDroppedWearable();
         modelList[voxMesh.gateway]=false
+        const asee = document.getElementById(voxMesh.hashValue)
+        asee.style.opacity='1';
         deleteAttachment();
         update_voxMesh(null);
         updateAllPositionValue(null);
         const metaCatAtk = window.localStorage.getItem("METACAT_atk");
         setModelInfo(metaCatAtk, costume);
-  
+      
       }
     }
 
