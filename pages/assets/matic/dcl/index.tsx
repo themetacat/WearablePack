@@ -1874,6 +1874,7 @@ modelList[modelMesh.hashValue] =false
         className="active"
         style={{ position: "relative", height: "90%", top: "5%" }}
       >
+        
         <canvas id="renderCanvasDcl" className={style.canvas}></canvas>
         <div style={{ position: "absolute", top: "10px" }}>
           <button className={style.btn} id="gizmo-position">

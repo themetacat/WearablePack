@@ -1928,14 +1928,17 @@ const matches = regex.exec(attributesData[0]);
       <div
         id="gizmos"
         className="active"
-        style={{ position: "relative", }}
+        style={{ position: "relative", display:'flex'}}
       >
-       <canvas id="renderCanvas" className={style.canvas}></canvas>
+        
+        <canvas id="renderCanvas" className={style.canvas}></canvas>
         <div style={{ position: "absolute", top: "10px" }}>
           <button className={style.btn} id="gizmo-position">Position</button>
           <button className={style.btn} id="gizmo-rotation">Rotation</button>
           <button className={style.btn} id="gizmo-scale">Scale</button>
         </div>
+     
+       
         <div style={{ position: "absolute", right: "10px", top: "10px" ,width:"30%"}}>
           <div className="editor-field position">
             <label className={style.lable}>Position</label>
