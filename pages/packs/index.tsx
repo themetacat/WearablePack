@@ -26,7 +26,7 @@ export default function Bags() {
   const textRef = React.useRef(null);
   const [loading, setLoading] = React.useState(false);
   const meta = {
-    title: `Bags - ${SITE_NAME}`,
+    title: `Packs - ${SITE_NAME}`,
     description: META_DESCRIPTION,
   };
 
@@ -193,7 +193,7 @@ export default function Bags() {
         </div>
       ) : null}
       <div className={style.container}>
-        <p className={style.titleBox}>Bags</p>
+        <p className={style.titleBox}>Packs</p>
         {dataInfoList === null ? (
           <>
             <p className={style.nothingInfo}>You don&apos;t own any bags</p>
@@ -239,7 +239,7 @@ export default function Bags() {
                         <span
                           style={{ display: "inline-block", color: "#fff" }}
                         >
-                          Wallet:{" "}
+                          TBA Address:{" "}
                         </span>
                         &nbsp;{truncatedAddress}
                       </p>

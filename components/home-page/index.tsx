@@ -103,9 +103,9 @@ const MENU = [
   //   type: "operation",
   // },
   {
-    label: "Bags",
+    label: "Packs",
     // icon: "/images/v5/Signout.png",
-    value: "/bags",
+    value: "/packs",
     type: "operation",
   },
   {

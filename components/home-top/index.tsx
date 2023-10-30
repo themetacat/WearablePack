@@ -90,9 +90,9 @@ const WALLET = [
 ];
 const MENU = [
   {
-    label: "Bags",
+    label: "Packs",
     // icon: "/images/v5/Signout.png",
-    value: "/bags",
+    value: "/packs",
     type: "operation",
   },
   {
@@ -1976,7 +1976,7 @@ export default function HomePage({ onClickHandler }: Props, ref) {
         <div className={style.container}>
             <p>Pack Your Wearable.</p>
             <p className={style.PBox}>
-              Use ERC-6551 to package and sell your Wearables.
+              Use <a className={style.a_data} target="https://eips.ethereum.org/EIPS/eip-6551" href="https://eips.ethereum.org/EIPS/eip-6551">ERC-6551</a> to package and sell your wearables as a whole.
             </p>
             <button
               className={style.bttBox}
@@ -1985,7 +1985,7 @@ export default function HomePage({ onClickHandler }: Props, ref) {
               }}
               disabled={mintContent === true}
             >
-              Mint Bag
+              Mint Pack
               <p className={cn(style.supply)}>
                 {mintNum}/{totalNum}
               </p>

@@ -669,7 +669,7 @@ export default function Matic() {
                 <div style={{ display: "flex" }}>
                   <div style={{display:"flex"}} className={style.btn_group}>
                     <p className={style.TbaAdd}>
-                      Wallet:&nbsp;{tokenboundAccountNum}
+                    TBA Address:&nbsp;{tokenboundAccountNum}
                       </p>
                     <div className={style.fuzhi} onMouseEnter={()=>{setClipboard(true)}} onMouseLeave={() => setClipboard(false)}  onClick={handleCopyClick}><img src={copyText===false?'/images/icon/fuzhi.png':'/images/icon/duihao.png'} alt="" />  
                     {clipboard===true?<span className={style.copiedTypeCon}>Copy address to clipboard</span>:null}
@@ -694,9 +694,9 @@ export default function Matic() {
                     </div>
                   )}
 
-                  {/* <div className={style.btnAccount} onClick={RefreshMetadata}>
+                  <div className={style.btnAccount} onClick={RefreshMetadata}>
                     Refresh metadata
-                  </div> */}
+                  </div>
                   </div>
                 </div>
                <p className={style.totalNum}>{dataInfo.length} {wearableType==='voxels'||wearableType==='Decentraland'?'Wearables':'Assets'}</p>
@@ -717,7 +717,7 @@ export default function Matic() {
             {dataInfoList === null ? (
                   <>
                     <p className={style.nothingInfo}>
-                      You don&apos;t have any wearable in this bag.
+                    Don&apos;t have any wearable yet in this pack, go <a className={style.a_data} href="https://opensea.io/account?search[chains][0]=MATIC" target="https://opensea.io/account?search[chains][0]=MATIC">OpenSea</a> to tranfer in some.
                     </p>
                   </>
                 ) : (
