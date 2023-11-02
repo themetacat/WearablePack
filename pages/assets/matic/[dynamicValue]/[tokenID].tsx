@@ -3,18 +3,20 @@ import HomePage from "../../../../components/home-page";
 import Page from "../../../../components/page";
 import { toast } from "react-hot-toast";
 import { SITE_NAME, META_DESCRIPTION } from "../../../../common/const";
-
+import UniversalProvider from '@walletconnect/universal-provider'
 import Status from "../../../../components/status";
-
+import { web3wallet } from '@/utils/WalletConnectUtil'
 import dynamic from "next/dynamic";
 import VoxFiled from '../vox';
 import DclContent from '../dcl';
 
 import { Core } from "@walletconnect/core";
-import { Web3Wallet } from "@walletconnect/web3wallet";
+// import { Web3Wallet } from "@walletconnect/web3wallet";
 import QRCodeModal from "@walletconnect/qrcode-modal";
 // import AuthClient from "@walletconnect/auth-client";
 import SignClient from "@walletconnect/sign-client";
+import WalletConnect from "@walletconnect/client";
+import WalletConnectProvider from '@walletconnect/client';
 import { useWalletProvider } from "../../../../components/web3modal";
 import { createWalletClient, http, custom, WalletClient, Account } from "viem";
 // const WalletConnect = require('@walletconnect/client').default;
@@ -416,11 +418,35 @@ export default function Matic() {
   //   []
   // )
 
-  const connect = async (val) => {
+  const connect = async (uri) => {
     // 解析二维码URL
-    // // console.log(val);
+    console.log(uri);
     // // console.log(core,22);
+    // const uri = val
+    try {
+      setLoading(true)
+      await web3wallet.pair({ uri })
+    } catch (error) {
+    } finally {
+      setLoading(false)
+    }
+    // const connector = new WalletConnect({ uri });
+// 创建连接
+// const connector = new WalletConnect({
+//   bridge: "https://bridge.walletconnect.org",
+//   qrcodeModal: val,
+// });
 
+// // 监听连接事件
+// connector.on("connect", (error, payload) => {
+//   if (error) {
+//     throw error;
+//   }
+//     // 连接成功，可以开始与远程DApp进行通信
+//   console.log("Connected to DApp");
+// });
+
+//     return
     // const web3wallet = await Web3Wallet.init({
     //   core, // <- pass the shared `core` instance
     //   metadata: {
@@ -430,6 +456,7 @@ export default function Matic() {
     //     icons: []
     //   },
     // })
+   
 
     // const request = {
     //   method: 'eth_requestAccounts',//eth_requestAccounts
@@ -457,31 +484,97 @@ export default function Matic() {
     //   }
     // });
     // // console.log(process, 333);
-  
-    const core = new Core({
-      // logger: 'debug',
-      projectId: "ff09b474e78c83e2d6e7c7091f9d3517",
-      // relayUrl: val ?? process.env.NEXT_PUBLIC_RELAY_URL
-    });
-    // // console.log(core, 222);
 
-    const web3wallet = await Web3Wallet.init({
-      core,
-      metadata: {
-        name: "React Web3Wallet",
-        description: "React Web3Wallet for WalletConnect",
-        url: "www.walletconnect.com",
-        icons: [],
-      },
-    });
-    // // console.log(web3wallet, 3654);
+    // await web3wallet.pair({ uri })
+    // return
+    // const core = new Core({
+    //   // logger: 'debug',
+    //   projectId: "ff09b474e78c83e2d6e7c7091f9d3517",
+    //   // relayUrl: val ?? process.env.NEXT_PUBLIC_RELAY_URL
+    // });
+    // // // console.log(core, 222);
 
-    // web3wallet.on('session_proposal', onSessionProposal)
+    // const web3wallet = await Web3Wallet.init({
+    //   core,
+    //   metadata: {
+    //     name: "React Web3Wallet",
+    //     description: "React Web3Wallet for WalletConnect",
+    //     url: "www.walletconnect.com",
+    //     icons: [],
+    //   },
+    // });
+    // const onConnect = async (uri: string) => {
+    //   const result = await web3wallet.core.pairing.pair({ uri })
+    //   console.log(result,33333)
+    // }
+    // onConnect(val)
+    // // // console.log(web3wallet, 3654);
+    // const provider = await UniversalProvider.init({
+    //   projectId: "ff09b474e78c83e2d6e7c7091f9d3517",
 
+    //   relayUrl: 'wss://relay.walletconnect.com'
+    // })
+    // // web3wallet.on('session_proposal', onSessionProposal)
+    // const params = {
+    //   requiredNamespaces: {
+    //     polkadot: {
+    //       methods: ['eth_sendTransaction', 'personal_sign'],
+    //       chains: ['eip155:1', 'eip155:137'],
+    //       events: ['accountsChanged', 'chainChanged'],
+    //     }
+    //   }
+    // }
+    
+    // const { uri, approval } = await provider.client.connect(params)
+    // console.log( uri,)
+    // console.log(approval);
+    
+//     const walletConnectSession = await approval()
+//     const walletConnectAccount = Object.values(walletConnectSession.namespaces)
+//   .map(namespace => namespace.accounts)
+//   .flat()
+// console.log(walletConnectAccount)
+
+
+// web3wallet.on('session_proposal', async proposal => {
+  // optionally show user a modal or way to reject or approve session
+
+  // handle user approval case
+
+  // // create the approved session with selected accounts, supported methods, chains and events for your wallet
+//   const walletConnectAccounts = accounts.map(
+//     account => `polkadot:91b171bb158e2d3848fa23a9f1c25182:${account.address}`
+//   )
+//   const session = await web3wallet.approveSession({
+//     id: proposal.id,
+//     namespaces: {
+//       polkadot: {
+//         accounts: walletConnectAccounts,
+//         methods: ['polkadot_signTransaction', 'polkadot_signMessage'],
+//         chains: ['polkadot:91b171bb158e2d3848fa23a9f1c25182'],
+//         events: ['chainChanged", "accountsChanged']
+//       }
+//     }
+//   })
+
+//   // create response object
+//   const response = { id: proposal.id, result: 'session approved', jsonrpc: '2.0' }
+
+//   // respond to the dapp request with the approved session's topic and response
+//   await web3wallet.respondSessionRequest({ topic: session.topic, response })
+// })
+
+
+
+// grab account addresses from CAIP account formatted accounts
+// const accounts = wcAccounts.map(wcAccount => {
+//   const address = wcAccount.split(':')[2]
+//   return address
+// })
     //   web3wallet.on('session_proposal', async sessionProposal => {
     //     try{
     //       const { id, params } = sessionProposal
-    //       // console.log(sessionProposal,5555);
+    //       console.log(sessionProposal,5555);
 
     //         const approvedNamespaces = buildApprovedNamespaces({
     //           proposal: params,
@@ -509,6 +602,9 @@ export default function Matic() {
     //     }
 
     //   })
+
+
+    
 
     //  const signClient = await SignClient.init({
     //   projectId: 'ff09b474e78c83e2d6e7c7091f9d3517',
@@ -688,7 +784,7 @@ export default function Matic() {
                   ) : (
                     <div
                       className={style.btnAccount1}
-                      //  onClick={wallet}
+                       onClick={wallet}
                     >
                       Deployed
                     </div>
